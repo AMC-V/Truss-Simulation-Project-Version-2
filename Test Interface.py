@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 import sys
-from partsys import GraphicsTools
+from TestBackend import GraphicsTools
 
 class MainWindow(QMainWindow): # Class that will create UI, will inhertant all the methods from QMainWindow
     def __init__(self): # The constructor for this class that will always be called when first created
