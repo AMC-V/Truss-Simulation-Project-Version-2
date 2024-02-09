@@ -83,8 +83,8 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Major Node Label Content
         #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         # Minor Widgets
-        self.indexLabel = QLabel("#")
-        self.indexLabel.setStyleSheet("""
+        self.indexLabelNode = QLabel("#")
+        self.indexLabelNode.setStyleSheet("""
                                        min-width: 2em;
                                        max-width: 2em;
                                        
@@ -118,7 +118,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Major Node Label Content addition and layout
         #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         # Adding Minor to Node Label Main Layout
-        self.labelLayout.addWidget(self.indexLabel)
+        self.labelLayout.addWidget(self.indexLabelNode)
         self.labelLayout.addWidget(self.positionLabel)
         self.labelLayout.addWidget(self.symmetricLabel)
         self.labelLayout.addWidget(self.deleteLabel)
@@ -180,8 +180,8 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Minor Node Input Content
         #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Tiny Widgets
-        self.indexNumber = QLabel("1")
-        self.indexNumber.setStyleSheet("""
+        self.indexNumberNode = QLabel("1")
+        self.indexNumberNode.setStyleSheet("""
                                        min-width: 2em;
                                        max-width: 2em; """)
         
@@ -200,7 +200,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Minor Node Input addition and layout
         #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Adding Tiny to The Node Input Main Layout
-        self.nodeInputLayout.addWidget(self.indexNumber)
+        self.nodeInputLayout.addWidget(self.indexNumberNode)
         self.nodeInputLayout.addWidget(self.genericInput)
         self.nodeInputLayout.addWidget(self.symmetric)
         self.nodeInputLayout.addWidget(self.delete)
@@ -354,12 +354,20 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Major Force Label Content
         #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         # Minor Widgets
+        self.indexLabelForce = QLabel("#")
+        self.indexLabelForce.setStyleSheet("""
+                                       min-width: 2em;
+                                       max-width: 2em;
+                                       
+                                       background-color: rgba(0,0,0,0);""")
+        
         self.forceLabel = QLabel("Force")
         self.forceLabel.setStyleSheet("""
                                        min-width: 3.8em;
                                        max-width: 3.8em;
                                        
-                                       background-color: rgba(0,0,0,0);""")
+                                       background-color: rgba(0,0,0,0);
+                                       qproperty-alignment: AlignLeft;""")
         
         self.forceSymmetricLabel = QLabel("Symmetric")
         self.forceSymmetricLabel.setStyleSheet("""
@@ -373,6 +381,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Major Force Label Content addition and layout
         #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         # Adding Minor to Force Label Main Layout
+        self.forceLabelLayout.addWidget(self.indexLabelForce)
         self.forceLabelLayout.addWidget(self.forceLabel)
         self.forceLabelLayout.addWidget(self.forceSymmetricLabel)
         
@@ -430,6 +439,11 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Minor Force Input Content
         #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Tiny Widgets
+        self.indexNumberForce = QLabel("1")
+        self.indexNumberForce.setStyleSheet("""
+                                            min-width: 2em;
+                                            max-width: 2em; """)
+        
         self.genericInputF = QLineEdit()
         self.genericInputF.editingFinished.connect(lambda: self.onTextFinalF(1)) #textChanged
         self.genericInputF.setAlignment(Qt.AlignCenter)
@@ -442,10 +456,11 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Minor Force Input addition and layout
         #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Adding Tiny to The Force Input Main Layout
+        self.forceInputLayout.addWidget(self.indexNumberForce)
         self.forceInputLayout.addWidget(self.genericInputF)
         self.forceInputLayout.addWidget(self.symmetric)
         
-        self.forceInputLayout.setAlignment(self.genericInputF, Qt.AlignCenter)
+        self.forceInputLayout.setAlignment(self.genericInputF, Qt.AlignLeft)
         self.forceInputLayout.setAlignment(self.symmetric, Qt.AlignCenter)
 
         # Setting the Force Input Main Layout to the Force Input Main Struture
@@ -549,35 +564,47 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # endregion
              
     def createInfoLabel(self, message):
+        # region Info Label Widget and Layout Creation
+        #(((((((((((((((((((())))))))))))))))))))
         self.noteContainer = QFrame() # To get outline of note
         self.noteContainer.setFixedHeight(100) # On frame min and max
         self.noteLayout = QVBoxLayout() # Add things up to down
         self.noteLayout.setSpacing(0)
-
+        #(((((((((((((((((((())))))))))))))))))))
+        # endregion
+        
+        # region Info Label Content
+        #(((((((((((((((((((())))))))))))))))))))
         self.note = QLabel("Note:") # look at master style sheet
         self.note.setStyleSheet("qproperty-alignment: AlignLeft;")
         
         self.genericInfo = QLabel(message) # look at master style sheet
         # by default Q label text is centered in master style sheet
+        #(((((((((((((((((((())))))))))))))))))))
+        # endregion
         
+        # region Info Label addition and layout
+        #(((((((((((((((((((())))))))))))))))))))
         self.noteLayout.addWidget(self.note)
         self.noteLayout.addWidget(self.genericInfo)
         
         self.noteContainer.setLayout(self.noteLayout) # returns this, to be added to layout
+        #(((((((((((((((((((())))))))))))))))))))
+        # endregion
         
     def createMinorNodeResponse(self, number):
         # region Minor Node Response Widget and Layout Creation
-        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #(((((((((((((((((((())))))))))))))))))))
         self.genericRowWidget = QWidget()
         self.genericRowWidget.setMinimumHeight(45)
         self.genericHorizationalLayout = QHBoxLayout()
         self.genericHorizationalLayout.setSpacing(0)
         self.genericHorizationalLayout.setContentsMargins(0,0,0,0)
-        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #(((((((((((((((((((())))))))))))))))))))
         # endregion
         
         # region Minor Node Response Content
-        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #(((((((((((((((((((())))))))))))))))))))
         self.indexNumber_1 = QLabel(f"{number}")
         self.indexNumber_1.setStyleSheet("""
                                        min-width: 2em;
@@ -592,11 +619,11 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         #self.symmetric.setStyleSheet("""QCheckBox::indicator:hover{background-color: green;}""")
         
         self.delete_1 = QRadioButton()
-        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #(((((((((((((((((((())))))))))))))))))))
         # endregion
         
         # region Minor Node Response addition and layout
-        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #(((((((((((((((((((())))))))))))))))))))
         self.genericHorizationalLayout.addWidget(self.indexNumber_1)
         self.genericHorizationalLayout.addWidget(self.genericInput_1)
         self.genericHorizationalLayout.addWidget(self.symmetric_1)
@@ -615,12 +642,12 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         self.genericInput_1.editingFinished.connect(lambda: self.onTextFinal(number)) #textChanged
         
         self.nodeInputScrollAreaWidgetLayout.addWidget(self.genericRowWidget)
-        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #(((((((((((((((((((())))))))))))))))))))
         # endregion
           
     def createMinorForceResponse(self, number):
         # region Minor Force Input Widget and Layout Creation
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #(((((((((((((((((((())))))))))))))))))))
         # The Force Input Main Struture
         self.forceInputContainer_1 = QWidget() # Contains input, will contain the forceInputLayout, add to forceInputScrollAreaWidgetLayout once done
         self.forceInputContainer_1.setMinimumHeight(45)
@@ -630,27 +657,33 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         self.forceInputLayout_1 = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
         self.forceInputLayout_1.setSpacing(0)
         self.forceInputLayout_1.setContentsMargins(0,0,0,0)
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #(((((((((((((((((((())))))))))))))))))))
         # endregion
         
         # region Minor Force Input Content
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #(((((((((((((((((((())))))))))))))))))))
         # Tiny Widgets
+        self.indexNumber_2 = QLabel(f"{number}")
+        self.indexNumber_2.setStyleSheet("""
+                                       min-width: 2em;
+                                       max-width: 2em;
+                                       """)
         self.genericInput_2 = QLineEdit()
         self.genericInput_2.setAlignment(Qt.AlignCenter)
         self.genericInput_2.setStyleSheet("background-color: white;")
         
         self.symmetric_2 = QCheckBox()
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #(((((((((((((((((((())))))))))))))))))))
         # endregion
         
         # region Minor Force Input addition and layout
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #(((((((((((((((((((())))))))))))))))))))
         # Adding Tiny to The Force Input Main Layout
+        self.forceInputLayout_1.addWidget(self.indexNumber_2)
         self.forceInputLayout_1.addWidget(self.genericInput_2)
         self.forceInputLayout_1.addWidget(self.symmetric_2)
-        
-        self.forceInputLayout_1.setAlignment(self.genericInput_2, Qt.AlignCenter)
+
+        self.forceInputLayout_1.setAlignment(self.genericInput_2, Qt.AlignLeft)
         self.forceInputLayout_1.setAlignment(self.symmetric_2, Qt.AlignCenter)
 
         # Setting the Force Input Main Layout to the Force Input Main Struture
@@ -658,12 +691,12 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         
         # important for numbers
         self.list_of_widgetsF.append(self.forceInputContainer_1)
-        self.list_of_widgets_previous_textF.append("0,0") #store preivous good text
+        self.list_of_widgets_previous_textF.append("0,0") # store preivous good text
         
-        self.genericInput_2.editingFinished.connect(lambda: self.onTextFinalF(number)) #textChanged
+        self.genericInput_2.editingFinished.connect(lambda: self.onTextFinalF(number))
         
         self.forceInputScrollAreaWidgetLayout.addWidget(self.forceInputContainer_1) 
-        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        #(((((((((((((((((((())))))))))))))))))))
         # endregion
     
     def onTextFinal(self,number):
@@ -688,8 +721,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
 
         print("force creation started-") # the process really starts from here
         self.lineParsingF(hey[0].text(), number) # letsss goooo
-            
-        
+                   
     def cleartext(self, number):
         yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
         
@@ -762,7 +794,6 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
             print("format was not followed")
             #self.cleartext(number)
             print("=======================")
-  
   
     def nextPage(self):
         print("hi")
