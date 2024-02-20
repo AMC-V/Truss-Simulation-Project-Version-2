@@ -302,3 +302,13 @@ class GraphicsTools():
         self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
         self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
         return position
+    
+    def create_matrix(self):
+        # After all nodes are created this the next thing calculated
+        self.number_of_equations = 2 * self.number_of_nodes # Total number of equations based on number of nodes, now 3 nodes, assume clean data
+ 
+    
+    
+    
+    
+    
