@@ -108,21 +108,21 @@ class GraphicsTools():
         neg_y_axis_label = vp.label(pos = neg_y_axis.pos + neg_y_axis.axis + vec(0, -axis.toffset, 0), 
                 text='-y', height = 16, border = 4,font = axis.f, line = False, opacity = 0, box = False)
 
-        pos_z_axis = arrow(pos = origin, axis = vec(0,0,axis.l))
-        pos_z_axis.shaftwidth = axis.s
-        pos_z_axis.color = vec(0, 0, 1)
-        pos_z_axis.opacity = op
+        # pos_z_axis = arrow(pos = origin, axis = vec(0,0,axis.l))
+        # pos_z_axis.shaftwidth = axis.s
+        # pos_z_axis.color = vec(0, 0, 1)
+        # pos_z_axis.opacity = op
 
-        pos_z_axis_label = vp.label(pos = pos_z_axis.pos + pos_z_axis.axis + vec(0, axis.toffset, 0), 
-                text='+z', height = 16, border = 4, font = axis.f, line = False, opacity = 0, box = False)
+        # pos_z_axis_label = vp.label(pos = pos_z_axis.pos + pos_z_axis.axis + vec(0, axis.toffset, 0), 
+        #         text='+z', height = 16, border = 4, font = axis.f, line = False, opacity = 0, box = False)
                 
-        neg_z_axis = arrow(pos = origin, axis = vec(0,0,-axis.l))
-        neg_z_axis.shaftwidth = axis.s
-        neg_z_axis.color = vp.vec(0, 0, 1)
-        neg_z_axis.opacity = op
+        # neg_z_axis = arrow(pos = origin, axis = vec(0,0,-axis.l))
+        # neg_z_axis.shaftwidth = axis.s
+        # neg_z_axis.color = vp.vec(0, 0, 1)
+        # neg_z_axis.opacity = op
 
-        neg_z_axis_label = vp.label(pos = neg_z_axis.pos + neg_z_axis.axis + vec(0, -axis.toffset, 0), 
-                text='-z', height = 16, border = 4,font = axis.f, line = False, opacity = 0, box = False)
+        #neg_z_axis_label = vp.label(pos = neg_z_axis.pos + neg_z_axis.axis + vec(0, -axis.toffset, 0), 
+        #        text='-z', height = 16, border = 4,font = axis.f, line = False, opacity = 0, box = False)
         #=================================================================
         # endregion
         
