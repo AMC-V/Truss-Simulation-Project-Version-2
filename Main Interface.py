@@ -746,7 +746,6 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
             self.list_of_widgets_previous_text[number - 1] = text # replace zeros with good number
             print("=======================")
             
-
         except:
             print("node created unsuccessfully")
             print("format was not followed")

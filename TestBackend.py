@@ -127,21 +127,62 @@ class GraphicsTools():
         # endregion
         
     # intended to handle new nodes and existing nodes no forces, both cases work
-    def node_creation(self, x, y, number_of_node):
-        if number_of_node > self.number_of_nodes: # so doesn't exit in list of nodes
+    def node_creation(self, x, y, current_node): # ex if current node is five thn we expect a label of five
+        print(f"number of nodes backend {self.number_of_nodes} vs current number {current_node}")
+        
+        # what if a number was skipped? then how to assign label
+        
+        if current_node > self.number_of_nodes and current_node - 1 == self.number_of_nodes: # so doesn't exit in list of nodes
             self.list_of_spheres.append(sphere(pos = vec(x, y, 0))) # create sphere and label
-            self.list_of_labels.append(vp.label(pos = vec(x, y, 0), text = f"{number_of_node}", xoffset = 5, yoffset = 10, space = 1, 
+            # creates label for current if current is new head of pack 
+            self.list_of_labels.append(vp.label(pos = vec(x, y, 0), text = f"{current_node}", xoffset = 5, yoffset = 10, space = 1, 
                     height = 16, border = 4, font = 'monospace', box = False, opacity = 0, color = 1/255 * vec(255,150,0)))
             self.list_of_nodes.append(vec(x, y, 0)) # basically only holds a nodes position, first will be zero
         
             self.number_of_nodes += 1
             print("node created successfully")
+        
+        elif current_node > self.number_of_nodes and current_node - 1 != self.number_of_nodes:
+            # then we are skipping a few nodes in the line and need to actualize the skipped
+            print("Trying to actualize a node without actualizing the preiouvs node ")
             
+            number_need_to_actualize = (current_node - 1) - self.number_of_nodes
+            
+            # now all skipped nodes are tarnsparent
+            for x_dalta in range(number_need_to_actualize):
+                
+                # the objects for the skipped nodes will be created but made transparent
+                temp_sphere = sphere(pos = vec(0,0,0))
+                temp_sphere.opacity = 0
+                
+                temp_label = vp.label(pos = vec(0, 0, 0), text = f"{self.number_of_nodes + 1}", xoffset = 5, yoffset = 10, space = 1, 
+                        height = 16, border = 4, font = 'monospace', box = False, opacity = 0, color = 1/255 * vec(255,150,0))
+                temp_label.visible = False
+                
+                self.list_of_spheres.append(temp_sphere) # create sphere and label 
+                self.list_of_labels.append(temp_label)
+                self.list_of_nodes.append(vec(0, 0, 0)) # basically only holds a nodes position, first will be zero
+                                
+                self.number_of_nodes += 1
+                print(f"Skipped node {self.number_of_nodes} created successfully")
+            
+            self.list_of_spheres.append(sphere(pos = vec(x, y, 0))) # create sphere and label 
+            self.list_of_labels.append(vp.label(pos = vec(x, y, 0), text = f"{current_node}", xoffset = 5, yoffset = 10, space = 1, 
+                    height = 16, border = 4, font = 'monospace', box = False, opacity = 0, color = 1/255 * vec(255,150,0)))
+            self.list_of_nodes.append(vec(x, y, 0)) # basically only holds a nodes position, first will be zero
+        
+            self.number_of_nodes += 1
+            print("node created successfully")
+        
         else: # update the sphere and label location
-            self.list_of_nodes[number_of_node - 1] = vec(x, y, 0) # update position data
-            self.list_of_labels[number_of_node - 1].pos = vec(x, y, 0) # update position of label
-            self.list_of_spheres[number_of_node - 1].pos = vec(x, y, 0) # update position of sphere
+            self.list_of_nodes[current_node - 1] = vec(x, y, 0) # update position data
+            self.list_of_labels[current_node - 1].pos = vec(x, y, 0) # update position of label
+            self.list_of_spheres[current_node - 1].pos = vec(x, y, 0) # update position of sphere
             
+            # if a skipped node then make its objects opacqic
+            self.list_of_labels[current_node - 1].visible = True 
+            self.list_of_spheres[current_node - 1].opacity = 1 
+                      
             print("node updated successfully")
         
         self.list_of_force.append(0) # leave a placeholder in the list for the node's force
