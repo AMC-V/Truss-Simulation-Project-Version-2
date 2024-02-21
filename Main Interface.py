@@ -739,7 +739,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
             
             if self.list_of_widgets_previous_textF[number - 1] != "0,0": # if the node has been maunally assigned a force
                 self.start.node_creation_with_force(float(i), float(j), number, float(f), float(a)) # then use the method that takes in a force as well as node
-        
+                
             else: # if the node has default force
                 self.start.node_creation(float(i), float(j), number) # then use node only method
                         
@@ -796,8 +796,8 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
   
     def nextPage(self):
         print("hi")
-        
-        self.elementWindow = ElementWindow()
+        print(self.start)
+        self.elementWindow = ElementWindow(self.start)
         self.elementWindow.show()
         
     def onClick(self):    
@@ -814,13 +814,15 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         pass
 
 class ElementWindow(QMainWindow):
-        def __init__(self): # The constructor for this class that will always be called when first created
+        def __init__(self, bah): # The constructor for this class that will always be called when first created
             super().__init__() # Call the constructor of the parent class and return a object of the parent
             self.setGeometry(1420, 50, 100, 100) # Set spawn position of window and inital size
             self.setMaximumWidth(100)
             self.setMaximumHeight(1500)
             self.setWindowTitle("INSIGHT")
             self.createElementWindow() # In constructor call another method
+            self.Graphics = bah
+            print(self.Graphics) # should be a string pointing to the same location in memeory
             
         def createElementWindow(self):
             # region Window Widget and Layout Creation
@@ -1230,7 +1232,24 @@ class ElementWindow(QMainWindow):
             print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
             
             print("Element creation started-") # the process really starts from here
-            #self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
+            self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
+        
+        def lineParsing(self, text, number):
+            try:
+                i,j = text.split(",") # Grab the text and break it into two parts
+
+                self.Graphics.element_creation(int(i), int(j))
+                            
+                self.list_of_widgets_previous_text[number - 1] = text # replace zeros with good number
+                print("=======================")
+                
+            except:
+                print("node created unsuccessfully")
+                print("format was not followed")
+                #self.cleartext(number)
+                print("=======================")
+        
+        
         
 class UI(): # This class will hold the method that will be called in a different file to start UI
     def start():

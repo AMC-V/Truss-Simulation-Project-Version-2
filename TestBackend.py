@@ -1,6 +1,6 @@
 
 import vpython as vp
-
+import numpy as np
 #=================================================================
 # region method overloads for convenions
 def arrow(**kid):
@@ -52,6 +52,7 @@ def sqrt(number):
 
 class GraphicsTools():
     number_of_nodes = 0
+    number_of_current_members = 0
 
     list_of_nodes = [] # Will contain all nodes, examples 3 nodes
     list_of_spheres = []
@@ -126,6 +127,9 @@ class GraphicsTools():
         #=================================================================
         # endregion
         
+    def Bprint(self):
+        print("the ref has passed correctly")
+        
     # intended to handle new nodes and existing nodes no forces, both cases work
     def node_creation(self, x, y, current_node): # ex if current node is five thn we expect a label of five
         print(f"number of nodes backend {self.number_of_nodes} vs current number {current_node}")
@@ -163,6 +167,11 @@ class GraphicsTools():
                 self.list_of_labels.append(temp_label)
                 self.list_of_nodes.append(vec(0, 0, 0)) # basically only holds a nodes position, first will be zero
                                 
+                self.list_of_force.append(0) # leave a placeholder in the list for the node's force
+                self.list_of_angle.append(0) # leave a placeholder in the list for the node's angle
+                            
+                self.list_of_force_arrows.append(vp.arrow(pos = vec(0,0,0), axis = vec(0,0,0), color = 1/255 * vec(236, 215, 16), opacity = 0))
+          
                 self.number_of_nodes += 1
                 print(f"Skipped node {self.number_of_nodes} created successfully")
             
@@ -187,6 +196,8 @@ class GraphicsTools():
         
         self.list_of_force.append(0) # leave a placeholder in the list for the node's force
         self.list_of_angle.append(0) # leave a placeholder in the list for the node's angle
+        
+        self.list_of_force_arrows.append(vp.arrow(pos = vec(0,0,0,), axis = vec(0,0,0), color = 1/255 * vec(236, 215, 16), opacity = 0))
         
         #print(self.list_of_nodes) # good for checking backup list nodes
         return vec(x, y, 0) # a return is not really needed atm but keeping in case
@@ -274,14 +285,22 @@ class GraphicsTools():
         
         offset_from_tail = node_location + hat(position)
         
-        self.list_of_force_arrows.append(vp.arrow(pos = offset_from_tail, axis = node_location - offset_from_tail, color = 1/255 * vec(236, 215, 16), opacity = 0.75))
+        self.list_of_force_arrows[node_on_which_current_force_acts - 1].opacity = 0.75 # reveal the force arrow 
+        self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
+        self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
+        
+        print(f"current number of force arrows is {len(self.list_of_force_arrows)} with the number of nodes being {len(self.list_of_angle)}, they should prob be the sname")
         
         return position
 
     # just update the force position no change to the force itself
     def force_creation_E(self, node_on_which_current_force_acts, force_applied, angles):    
-        node_location = self.list_of_nodes[node_on_which_current_force_acts - 1]
+        print(f"passed force {force_applied} and angle {angles} ")
         
+        node_location = self.list_of_nodes[node_on_which_current_force_acts - 1]
+        print(f"New updated position in backup list is {node_location}")
+        
+        print("passes here")
         self.list_of_force[node_on_which_current_force_acts - 1] = force_applied
         self.list_of_angle[node_on_which_current_force_acts - 1] = angles
         
@@ -299,9 +318,59 @@ class GraphicsTools():
         
         offset_from_tail = node_location + hat(position)
         
+        print("passed again")
         self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
+        print("passed a third time")
         self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
+        
+        print("Something happened.....")
         return position
+    
+    def element_creation(self, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element
+        #global number_of_current_members
+        
+        self.number_of_current_members += 1
+        
+        self.number_of_equations = 2 * self.number_of_nodes # Total number of equations based on number of nodes, now 3 nodes, assume clean data
+
+        print(self.number_of_equations)
+        
+        # Check to flip the inputs
+        if node_number_1 > node_number_2:
+            temp_number = node_number_2
+            node_number_2 = node_number_1
+            node_number_1 = temp_number
+        
+        # Get the nodes (basicaly positions) from the nodes list 
+        node_temp_n = self.list_of_nodes[node_number_1 - 1] # The first element of the nodes list
+        node_temp_p = self.list_of_nodes[node_number_2 - 1] # The second element of the nodes list
+
+        # Create visual of element
+        element_AB_visual = cylinder(pos = node_temp_n, axis = node_temp_p - node_temp_n)
+        element_AB_visual.texture = vp.textures.metal
+        
+        vp.label(pos = 1/2 * (element_AB_visual.axis) + element_AB_visual.pos, 
+                text = f"<b>{self.number_of_current_members}</b>", xoffset = 0, yoffset = 0, space = 0, height = 15, 
+                border = 1, font = 'monospace', box = True, opacity = 0, linecolor = vec(0,0,0), 
+                color = 1/255 * vec(255, 0, 125))
+        
+        self.element_visual_list.append(element_AB_visual)
+        
+        self.list_of_unknowns.append(self.number_of_current_members) # Gets number of forces aka memebers, m
+        
+        x = node_temp_p.x - node_temp_n.x # As a vector component x
+        y = node_temp_p.y - node_temp_n.y # As a vector component y
+        c = sqrt(x**2 + y**2)   # Mag of triangle
+
+        element_AB = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
+
+        # Since node n and node p were choosen then in the element np, the force applied there
+        element_AB[node_number_1 * 2 - 2][0] = x/c # The x transformion for the force on the element AB from A
+        element_AB[node_number_1 * 2 - 1][0] = y/c # The y transformion for the force on the element AB from A
+        element_AB[node_number_2 * 2 - 2][0] = -1 * x/c # The x transformion for the force on the element AB from B
+        element_AB[node_number_2 * 2 - 1][0] = -1 * y/c # The y transformion for the force on the element AB from B
+
+        self.list_of_elements.append(element_AB)
     
     def create_matrix(self):
         # After all nodes are created this the next thing calculated
