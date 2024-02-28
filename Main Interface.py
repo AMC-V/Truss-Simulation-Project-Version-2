@@ -853,7 +853,7 @@ class ElementWindow(QMainWindow):
             #----------------------------------------
             # region Primary Element Note
             #****************************************
-            self.createInfoLabel("Enter an element as mag.,mag.") # Creates a widget called noteCotainer 
+            self.createInfoLabel("Enter an element as int,int.") # Creates a widget called noteCotainer 
             #****************************************
             # endregion
                 
@@ -1238,7 +1238,7 @@ class ElementWindow(QMainWindow):
             try:
                 i,j = text.split(",") # Grab the text and break it into two parts
 
-                self.Graphics.element_creation(int(i), int(j))
+                self.Graphics.element_creation(number, int(i), int(j))
                             
                 self.list_of_widgets_previous_text[number - 1] = text # replace zeros with good number
                 print("=======================")
@@ -1246,10 +1246,18 @@ class ElementWindow(QMainWindow):
             except:
                 print("node created unsuccessfully")
                 print("format was not followed")
-                #self.cleartext(number)
+                self.cleartext(number)
                 print("=======================")
-        
-        
+                
+        def cleartext(self, number):
+            yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
+            
+            hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
+            hey[0].clear()
+                
+            print(f"Line {number} has been cleared.") # go to the first QLineEdit in the list and grab the text from it
+            
+            hey[0].setText(self.list_of_widgets_previous_text[number - 1])
         
 class UI(): # This class will hold the method that will be called in a different file to start UI
     def start():

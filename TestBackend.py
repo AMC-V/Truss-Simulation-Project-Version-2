@@ -372,6 +372,10 @@ class GraphicsTools():
 
         self.list_of_elements.append(element_AB)
     
+    def element_check(self,current_element, node_number_1, node_number_2):
+        pass
+    
+    
     def create_matrix(self):
         # After all nodes are created this the next thing calculated
         self.number_of_equations = 2 * self.number_of_nodes # Total number of equations based on number of nodes, now 3 nodes, assume clean data
