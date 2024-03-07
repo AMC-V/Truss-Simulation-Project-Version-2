@@ -756,6 +756,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         try:
             i,j = text.split(",") # Grab the text and break it into two parts
             
+            # if node not made yet where does this info come from, get default 
             print(self.list_of_widgets_previous_text[number - 1]) # so position has changed 
             
             x,y = self.list_of_widgets_previous_text[number - 1].split(",")
@@ -1238,7 +1239,7 @@ class ElementWindow(QMainWindow):
             try:
                 i,j = text.split(",") # Grab the text and break it into two parts
 
-                self.Graphics.element_creation(number, int(i), int(j))
+                self.Graphics.element_check(number, int(i), int(j))
                             
                 self.list_of_widgets_previous_text[number - 1] = text # replace zeros with good number
                 print("=======================")
