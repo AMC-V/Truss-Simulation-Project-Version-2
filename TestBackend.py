@@ -52,6 +52,7 @@ def sqrt(number):
 class GraphicsTools():
     number_of_nodes = 0
     number_of_current_members = 0
+    number_of_equations = 0
 
     list_of_nodes = [] # Will contain all nodes, examples 3 nodes
     list_of_spheres = []
@@ -143,7 +144,7 @@ class GraphicsTools():
             self.list_of_nodes.append(vec(x, y, 0)) # basically only holds a nodes position, first will be zero
         
             self.number_of_nodes += 1
-            print("node created successfully")
+            print("node created successfully-")
         
         elif current_node > self.number_of_nodes and current_node - 1 != self.number_of_nodes:
             # then we are skipping a few nodes in the line and need to actualize the skipped
@@ -180,7 +181,7 @@ class GraphicsTools():
             self.list_of_nodes.append(vec(x, y, 0)) # basically only holds a nodes position, first will be zero
         
             self.number_of_nodes += 1
-            print("node created successfully")
+            print("node created successfully-")
         
         else: # update the sphere and label location
             self.list_of_nodes[current_node - 1] = vec(x, y, 0) # update position data
@@ -191,7 +192,7 @@ class GraphicsTools():
             self.list_of_labels[current_node - 1].visible = True 
             self.list_of_spheres[current_node - 1].opacity = 1 
                       
-            print("node updated successfully")
+            print("node updated successfully-")
         
         self.list_of_force.append(0) # leave a placeholder in the list for the node's force
         self.list_of_angle.append(0) # leave a placeholder in the list for the node's angle
@@ -268,7 +269,7 @@ class GraphicsTools():
         return vec(x, y, 0)
     
     # create a new 
-    def force_creation(self, node_on_which_current_force_acts, force_applied, angles):    
+    def force_creation(self, node_on_which_current_force_acts, force_applied, angles):
         node_location = self.list_of_nodes[node_on_which_current_force_acts - 1]
         print(f"where it gets {node_location}")
         self.list_of_force[node_on_which_current_force_acts - 1] = force_applied
@@ -297,7 +298,7 @@ class GraphicsTools():
         return position
 
     # just update the force position no change to the force itself
-    def force_creation_E(self, node_on_which_current_force_acts, force_applied, angles):    
+    def force_creation_E(self, node_on_which_current_force_acts, force_applied, angles):
         print(f"passed force {force_applied} and angle {angles} ")
         
         node_location = self.list_of_nodes[node_on_which_current_force_acts - 1]
@@ -329,12 +330,49 @@ class GraphicsTools():
         print("Something happened.....")
         return position
     
-    def element_creation(self, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
-        
+    def calculate_number_of_equations(self): # Needed for correct matrix position
         self.number_of_equations = 2 * self.number_of_nodes # Total number of equations based on number of nodes, now 3 nodes, assume clean data
-
-        print(f"total number of equations is {self.number_of_equations}")
+        print(f"Total number of equations are {self.number_of_equations}")
         
+    def element_check(self,current_element, node_number_1, node_number_2):
+        print(f"{self.number_of_current_members} element(s) in backend vs current element {current_element}")
+        
+        # Check to see if completely new element has to be created with no element skips
+        if current_element > self.number_of_current_members and current_element - 1 == self.number_of_current_members: 
+            print(f"Creating element {current_element}")
+            self.element_creation(node_number_1, node_number_2) # if so then just create the element
+        
+        # Here we are skipping a few elements in the line to create the new element, so we need to actualize the skipped
+        elif current_element > self.number_of_current_members and current_element - 1 != self.number_of_current_members:
+            print("Trying to actualize an element without actualizing the previous element(s)")
+            
+            number_need_to_actualize = (current_element - 1) - self.number_of_current_members # math was done to figure out number
+            
+            # All skipped elements will be create as transparent dumby placeholders
+            for x_dalta in range(number_need_to_actualize):
+                print(f"Creating skipped element {self.number_of_current_members + 1}")
+            
+                # for dumby element just default to picking the first two nodes in the list
+                self.element_creation(1,2) # if the first two nodes don't exist then think of something else
+                
+                # then change the opacity of these dumby elements
+                self.element_visual_list[self.number_of_current_members - 1].opacity = 0
+                self.list_of_elements_label[self.number_of_current_members - 1].visible = False
+            
+            # Now created desired element  
+            print(f"Creating element {current_element}")  
+            self.element_creation(node_number_1, node_number_2)
+            print("Complex operation conducted successfully")
+        
+        # Just update the element with new nodes 
+        else:
+            print("Updating element")
+            self.element_update(current_element, node_number_1, node_number_2)
+        
+        print("Element creation ended-")
+        
+    def element_creation(self, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
+
         # Check to flip the inputs
         if node_number_1 > node_number_2:
             temp_number = node_number_2
@@ -353,7 +391,7 @@ class GraphicsTools():
         element_AB_visual.texture = vp.textures.metal
         
         temp_label = vp.label(pos = 1/2 * (element_AB_visual.axis) + element_AB_visual.pos, 
-                text = f"<b>{self.number_of_current_members}</b>", xoffset = 0, yoffset = 0, space = 0, height = 15, 
+                text = f"<b>{self.number_of_current_members + 1}</b>", xoffset = 0, yoffset = 0, space = 0, height = 15, 
                 border = 1, font = 'monospace', box = True, opacity = 0, linecolor = vec(0,0,0), 
                 color = 1/255 * vec(255, 0, 125))
         
@@ -377,56 +415,49 @@ class GraphicsTools():
 
         self.number_of_current_members += 1
         
-        print(self.number_of_current_members)
+        print(f"Successfully created element {self.number_of_current_members}")
+        print("------------")
+        
+    def element_update(self, current_element, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
+
+        # Check to flip the inputs
+        if node_number_1 > node_number_2:
+            temp_number = node_number_2
+            node_number_2 = node_number_1
+            node_number_1 = temp_number
+        
+        # Get the nodes (basicaly positions) from the nodes list 
+        node_temp_n = self.list_of_nodes[node_number_1 - 1] # The first element of the nodes list
+        node_temp_p = self.list_of_nodes[node_number_2 - 1] # The second element of the nodes list
+
+        print(f"node {node_number_1} has loaction {node_temp_n}\n"
+              + f"node {node_number_2} has location {node_temp_p}")
+        
+        # Update visual of element       
+        b = self.element_visual_list[current_element - 1].pos = node_temp_n
+        a = self.element_visual_list[current_element - 1].axis = node_temp_p - node_temp_n
+        self.element_visual_list[current_element - 1].opacity = 1
+        
+        self.list_of_elements_label[current_element - 1].pos = 1/2 * a + b
+        self.list_of_elements_label[current_element - 1].visible = True # useful
+        
+        x = node_temp_p.x - node_temp_n.x # As a vector component x
+        y = node_temp_p.y - node_temp_n.y # As a vector component y
+        c = sqrt(x**2 + y**2)   # Mag of triangle
+
+        element_AB = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
+
+        # Since node n and node p were choosen then in the element np, the force applied there
+        element_AB[node_number_1 * 2 - 2][0] = x/c # The x transformion for the force on the element AB from A
+        element_AB[node_number_1 * 2 - 1][0] = y/c # The y transformion for the force on the element AB from A
+        element_AB[node_number_2 * 2 - 2][0] = -1 * x/c # The x transformion for the force on the element AB from B
+        element_AB[node_number_2 * 2 - 1][0] = -1 * y/c # The y transformion for the force on the element AB from B
+
+        # needs more testing 
+        self.list_of_elements[current_element - 1] = element_AB # holds column matrix, replaces previous 
+        
+        print(f"Updated member {self.number_of_current_members} successfully")
     
-    def element_check(self,current_element, node_number_1, node_number_2):
-        print(f"number of element backend {self.number_of_current_members} vs current number {current_element}")
-        
-        # check to see if completely new element has been created with no element skips
-        if current_element > self.number_of_current_members and current_element - 1 == self.number_of_current_members: 
-            self.element_creation(node_number_1, node_number_2) # if so then just create the element
-            print("simple element created successfully")
-        
-        # here we are skipping a few elements in the line to create the new element, so we need to actualize the skipped
-        elif current_element > self.number_of_current_members and current_element - 1 != self.number_of_current_members:
-            print("Trying to actualize a element without actualizing the preiouvs element ")
-            
-            number_need_to_actualize = (current_element - 1) - self.number_of_current_members # math was done to figure out number
-            
-            # now all skipped nodes are tarnsparent
-            for x_dalta in range(number_need_to_actualize):
-                
-                print("Made it here at least")
-                self.element_creation(1,2) # just default to picking the first two nodes in the list
-                
-                # then mess with the opacity of the element
-                self.list_of_elements[self.number_of_current_members - 1].opacity = 0
-                self.list_of_elements_label[self.number_of_current_members - 1].visible = False
-             
-                print(f"Skipped element {self.number_of_current_members} created successfully")
-            
-            self.element_creation(node_number_1, node_number_2)
-            print("Complex element created successfully")
-        
-        # skip modifying for now
-        else: # update the sphere and label location
-            print("well well")
-        #     self.list_of_nodes[current_element - 1] = vec(x, y, 0) # update position data
-        #     self.list_of_labels[current_element - 1].pos = vec(x, y, 0) # update position of label
-        #     self.list_of_spheres[current_element - 1].pos = vec(x, y, 0) # update position of sphere
-            
-        #     # if a skipped node then make its objects opacqic
-        #     self.list_of_labels[current_element - 1].visible = True 
-        #     self.list_of_spheres[current_element - 1].opacity = 1 
-                    
-        #     print("node updated successfully")
-        
     def create_matrix(self):
         # After all nodes are created this the next thing calculated
         self.number_of_equations = 2 * self.number_of_nodes # Total number of equations based on number of nodes, now 3 nodes, assume clean data
- 
-    
-    
-    
-    
-    

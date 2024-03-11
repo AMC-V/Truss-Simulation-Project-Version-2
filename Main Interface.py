@@ -796,10 +796,9 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
             print("=======================")
   
     def nextPage(self):
-        print("hi")
-        print(self.start)
         self.elementWindow = ElementWindow(self.start)
         self.elementWindow.show()
+        self.start.calculate_number_of_equations() # First required calculation
         
     def onClick(self):    
         self.createMinorNodeResponse(len(self.list_of_widgets) + 1) # before node gets added
@@ -823,8 +822,7 @@ class ElementWindow(QMainWindow):
             self.setWindowTitle("INSIGHT")
             self.createElementWindow() # In constructor call another method
             self.Graphics = bah
-            print(self.Graphics) # should be a string pointing to the same location in memeory
-            
+          
         def createElementWindow(self):
             # region Window Widget and Layout Creation
             #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -1226,13 +1224,14 @@ class ElementWindow(QMainWindow):
                 # endregion
         
         def onTextFinal(self,number):
-            print(f" Number of nodes is {len(self.list_of_widgets)}.")
+            print(f" Number of elements are {len(self.list_of_widgets)}.")
             yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
             hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
             
             print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
             
             print("Element creation started-") # the process really starts from here
+            print("------------")
             self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
         
         def lineParsing(self, text, number):
