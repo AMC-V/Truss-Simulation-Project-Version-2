@@ -700,7 +700,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # endregion
     
     def onTextFinal(self,number):
-        print(f" Number of nodes is {len(self.list_of_widgets)}.")
+        print(f"Number of nodes is {len(self.list_of_widgets)}.")
         yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
         hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
         
@@ -709,7 +709,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         
         print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
         
-        print("node creation started-") # the process really starts from here
+        print("Node creation started-") # the process really starts from here
         self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
         
     def onTextFinalF(self,number):
@@ -719,7 +719,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
 
         print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
 
-        print("force creation started-") # the process really starts from here
+        print("Force creation started-") # the process really starts from here
         self.lineParsingF(hey[0].text(), number) # letsss goooo
                    
     def cleartext(self, number):
@@ -756,37 +756,14 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         try:
             i,j = text.split(",") # Grab the text and break it into two parts
             
-            # if node not made yet where does this info come from, get default 
-            print(self.list_of_widgets_previous_text[number - 1]) # so position has changed 
-            
+            # if node not made yet the position info come from the default vaule
+            # but an error will occur when force is being created, this is fine 
+
             x,y = self.list_of_widgets_previous_text[number - 1].split(",")
             # since no forces at the moment then us assocuted method
             self.start.node_creation_with_force(float(x), float(y), number, float(i), float(j))
                  
-            # list_of_nodes.append(node_position)
-            # number_of_nodes += 1
-            
-            # if k == None:
-                
-            # print("Null")
-                
-            # if k.lower() == "true":
-            #     make_symmetric = True
-            #     node_position = node_creation(-1*float(i), float(j), number_of_nodes)
-            #     list_of_nodes.append(node_position)  
-            #     number_of_nodes += 1
-                
-            # elif k.lower() == "false":
-            #     make_symmetric = False
-                
-            # elif make_symmetric:
-            #     make_symmetric = True
-            #     node_position = node_creation(-1*float(i), float(j), number_of_nodes)
-            #     list_of_nodes.append(node_position)  
-            #     number_of_nodes += 1
-                
-            print("force created successfully")
-            
+            # if successfully then store the value, so it can be retrieved later
             self.list_of_widgets_previous_textF[number - 1] = text # replace zeros with good number
             print("=======================")
         except:
@@ -1050,10 +1027,10 @@ class ElementWindow(QMainWindow):
             # region Major Add Element Button Content
             #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             self.addBackButton = QPushButton()
-            self.addBackButton.setText("<<< Back")
+            self.addBackButton.setText("Back")
             self.addBackButton.setStyleSheet("""
-                                                min-width: 3.8em;
-                                                max-width: 3.8em;
+                                                min-width: 3em;
+                                                max-width: 3em;
                                                  """)
             self.addBackButton.clicked.connect(lambda: self.onClickB())
            
@@ -1061,8 +1038,8 @@ class ElementWindow(QMainWindow):
             self.addElementButton = QPushButton()
             self.addElementButton.setText("Add Element")
             self.addElementButton.setStyleSheet("""
-                                                min-width: 5.1em;
-                                                max-width: 5.1em;
+                                                min-width: 5.3em;
+                                                max-width: 5.3em;
                                                  """)
             self.addElementButton.clicked.connect(lambda: self.onClick())
             

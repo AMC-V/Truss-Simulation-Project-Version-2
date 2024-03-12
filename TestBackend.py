@@ -54,7 +54,7 @@ class GraphicsTools():
     number_of_current_members = 0
     number_of_equations = 0
 
-    list_of_nodes = [] # Will contain all nodes, examples 3 nodes
+    list_of_nodes = [] # Will contain all nodes and serves as the backup list to check incoming data
     list_of_spheres = []
     list_of_labels = []
     list_of_force = []
@@ -64,7 +64,7 @@ class GraphicsTools():
     list_of_elements = [] # Will contain all the elements, connections between nodes, also the number of unknowns
     list_of_elements_label = []
     element_visual_list = [] # will hold something
-    list_of_unknowns = [] # based on the amount of memebers
+    list_of_unknowns = [] # based on the amount of elements
 
     def __init__(self): # The constructor for this class that will always be called when first created
         # region Gobal Coordiante System 
@@ -127,34 +127,30 @@ class GraphicsTools():
         #=================================================================
         # endregion
         
-    def Bprint(self):
-        print("the ref has passed correctly")
+    def node_creation(self, x, y, current_node): # intended to handle new nodes and existing nodes no forces, both cases work
+        print(f"Number of nodes in backend list is {self.number_of_nodes} and current node number is {current_node} from gui.")
         
-    # intended to handle new nodes and existing nodes no forces, both cases work
-    def node_creation(self, x, y, current_node): # ex if current node is five thn we expect a label of five
-        print(f"number of nodes backend {self.number_of_nodes} vs current number {current_node}")
-        
-        # what if a number was skipped? then how to assign label
-        
-        if current_node > self.number_of_nodes and current_node - 1 == self.number_of_nodes: # so doesn't exit in list of nodes
-            self.list_of_spheres.append(sphere(pos = vec(x, y, 0))) # create sphere and label
-            # creates label for current if current is new head of pack 
+        # so node number doesn't exist in list of nodes
+        if current_node > self.number_of_nodes and current_node - 1 == self.number_of_nodes: 
+            print(f"Creating node {current_node}-")
+            # create sphere and label to visually represent node and added to list so can be used to modify a node's properties
+            self.list_of_spheres.append(sphere(pos = vec(x, y, 0))) 
             self.list_of_labels.append(vp.label(pos = vec(x, y, 0), text = f"{current_node}", xoffset = 5, yoffset = 10, space = 1, 
                     height = 16, border = 4, font = 'monospace', box = False, opacity = 0, color = 1/255 * vec(255,150,0)))
-            self.list_of_nodes.append(vec(x, y, 0)) # basically only holds a nodes position, first will be zero
-        
+            self.list_of_nodes.append(vec(x, y, 0)) # basically only holds a node's position, 3D will used z position
             self.number_of_nodes += 1
-            print("node created successfully-")
+            print(f"Node {current_node} created successfully-")
         
+        # then we are skipping a few nodes in the line and need to actualize the skipped, can opimized
         elif current_node > self.number_of_nodes and current_node - 1 != self.number_of_nodes:
-            # then we are skipping a few nodes in the line and need to actualize the skipped
-            print("Trying to actualize a node without actualizing the preiouvs node ")
+            print("Trying to actualize a node without actualizing the previous node ")
             
             number_need_to_actualize = (current_node - 1) - self.number_of_nodes
             
-            # now all skipped nodes are tarnsparent
+            # now all skipped nodes are made transparent as they are dumby placeholders
             for x_dalta in range(number_need_to_actualize):
                 
+                print(f"Creating skipped node {self.number_of_nodes + 1}-")
                 # the objects for the skipped nodes will be created but made transparent
                 temp_sphere = sphere(pos = vec(0,0,0))
                 temp_sphere.opacity = 0
@@ -163,9 +159,9 @@ class GraphicsTools():
                         height = 16, border = 4, font = 'monospace', box = False, opacity = 0, color = 1/255 * vec(255,150,0))
                 temp_label.visible = False
                 
-                self.list_of_spheres.append(temp_sphere) # create sphere and label 
+                self.list_of_spheres.append(temp_sphere)
                 self.list_of_labels.append(temp_label)
-                self.list_of_nodes.append(vec(0, 0, 0)) # basically only holds a nodes position, first will be zero
+                self.list_of_nodes.append(vec(0, 0, 0)) # a skipped nodes position will default to zero
                                 
                 self.list_of_force.append(0) # leave a placeholder in the list for the node's force
                 self.list_of_angle.append(0) # leave a placeholder in the list for the node's angle
@@ -173,17 +169,20 @@ class GraphicsTools():
                 self.list_of_force_arrows.append(vp.arrow(pos = vec(0,0,0), axis = vec(0,0,0), color = 1/255 * vec(236, 215, 16), opacity = 0))
           
                 self.number_of_nodes += 1
-                print(f"Skipped node {self.number_of_nodes} created successfully")
+                print(f"Skipped node {self.number_of_nodes} created successfully-")
             
-            self.list_of_spheres.append(sphere(pos = vec(x, y, 0))) # create sphere and label 
+            # now we can created the desired node
+            print(f"Creating node {current_node}-")
+            self.list_of_spheres.append(sphere(pos = vec(x, y, 0))) 
             self.list_of_labels.append(vp.label(pos = vec(x, y, 0), text = f"{current_node}", xoffset = 5, yoffset = 10, space = 1, 
                     height = 16, border = 4, font = 'monospace', box = False, opacity = 0, color = 1/255 * vec(255,150,0)))
-            self.list_of_nodes.append(vec(x, y, 0)) # basically only holds a nodes position, first will be zero
-        
+            self.list_of_nodes.append(vec(x, y, 0))
             self.number_of_nodes += 1
-            print("node created successfully-")
+            print(f"Node {current_node} created successfully-")
         
-        else: # update the sphere and label location
+        # node exist and just needs to be update the sphere and label location
+        else: 
+            print(f"Updating node {current_node}-")
             self.list_of_nodes[current_node - 1] = vec(x, y, 0) # update position data
             self.list_of_labels[current_node - 1].pos = vec(x, y, 0) # update position of label
             self.list_of_spheres[current_node - 1].pos = vec(x, y, 0) # update position of sphere
@@ -191,87 +190,89 @@ class GraphicsTools():
             # if a skipped node then make its objects opacqic
             self.list_of_labels[current_node - 1].visible = True 
             self.list_of_spheres[current_node - 1].opacity = 1 
-                      
-            print("node updated successfully-")
+            print(f"Node {current_node} updated successfully-")
         
+        # Very important that the assicoted force to a node is created here, as the force creation method relies on the results here
         self.list_of_force.append(0) # leave a placeholder in the list for the node's force
         self.list_of_angle.append(0) # leave a placeholder in the list for the node's angle
         
         self.list_of_force_arrows.append(vp.arrow(pos = vec(0,0,0,), axis = vec(0,0,0), color = 1/255 * vec(236, 215, 16), opacity = 0))
         
-        #print(self.list_of_nodes) # good for checking backup list nodes
         return vec(x, y, 0) # a return is not really needed atm but keeping in case
     
-    # to handle new nodes and existing node, with new or existing with forces, the case where you have a new node but existing force doesn't exist
-    def node_creation_with_force(self, x, y, number_of_node, force, angle):
-        print(f"nummmm {number_of_node}")
+    def node_creation_with_force(self, x, y, number_of_node, force, angle): # to handle new nodes and existing node, with new or existing with forces
         
-        # we can remove  this line and so we can create a new node with default location and a force
-        print(f"so list of nodes only has {len(self.list_of_nodes)} but we are looking for 2")
-        #print(f"Backup Node position is <{self.list_of_nodes[number_of_node - 1]}>")
-        print("made it passed here")
-        if number_of_node > self.number_of_nodes: # so doesn't exit in list of nodes
+        # Node is completely new with new force, doesn't exist in list of nodes, need to create both
+        if number_of_node > self.number_of_nodes: 
             self.node_creation(x, y, number_of_node)
-            self.force_creation(number_of_node, force, angle) # this requires a node to exist first, the force existing doesn't matter
-            # so new node with new force, use this one when enabling the sym from the forces
+            self.force_creation(number_of_node, force, angle) # this requires a node to exist first, then force uses the template created 
+            # so new node with new force, use this one when enabling the sym. from the forces
             print("New baby node has been born")
             
-        else: # existing node (MOST OF THE TIME but now adding a force) maybe no position changed or yes, update the sphere and label location or/and updating forces loaction
-            print("helloe there")
+        # Existing node (MOST OF THE TIME but now adding a force) maybe no position changed or yes, update the sphere and label location or/and updating forces loaction
+        else: 
             # if same position
-            if self.list_of_nodes[number_of_node - 1] == vec(x, y, 0):
-                print(f"{self.list_of_nodes[number_of_node - 1]} number in list of nodes vs {vec(x,y,0)}")               
+            if self.list_of_nodes[number_of_node - 1] == vec(x, y, 0):     
+                         
                 # if force does not exist, then replace the placeholder zeroes with actual arrow
                 if self.list_of_force[number_of_node - 1] == 0 and self.list_of_angle[number_of_node - 1] == 0:
                     print("SAME POSITION AND CREATE FORCE")
+                    print(f"Creating force for node-")
                     self.force_creation(number_of_node, force, angle)
                 
                 # if same force, then do nothing
                 elif self.list_of_force[number_of_node - 1] == force and self.list_of_angle[number_of_node - 1] == angle:
                      print("SAME POSITOIN AND SAME FORCE")
-                     print("nothing changes here")
-                
-                 # if diff force, just update force with new angles and stuff
+                     print("No changes made-")             
+                 
+                # if diff force, just update force with new angles and stuff
                 elif self.list_of_force[number_of_node - 1] != force or self.list_of_angle[number_of_node - 1] != angle:
-                    print("SAME POSITION BUT REFRESHED FORCE")
-                    self.force_creation_E(number_of_node, force, angle)                
+                    print("SAME POSITION BUT UPDATE FORCE")
+                    print("Updating force-")
+                    self.force_update(number_of_node, force, angle)
+                    
+                # if for some reason everything else fails... do this...                
                 else:
                     print("cry")
            
-            else: # if diff position 
-                print("skipppp")
+            # if diff position           
+            else:  
+                print("Updating node position-")
                 self.list_of_nodes[number_of_node - 1] = vec(x, y, 0) # update position data, might need to do more
             
                 self.list_of_labels[number_of_node - 1].pos = vec(x, y, 0) # update position of label
             
                 self.list_of_spheres[number_of_node - 1].pos = vec(x, y, 0) # update position of sphere
+                print("Node position updated successfully-")
                 
                 # if force does not exist, then replace the placeholder zeroes with actual arrow
                 if self.list_of_force[number_of_node - 1] == 0 and self.list_of_angle[number_of_node - 1] == 0:
-                    print("NEW FORCE CREATE WHILE DIFF POSITION")
-                    self.force_creation(number_of_node, force, angle) # hmmmm
+                    print("DIFF POSITION AND CREATE FORCE")
+                    print(f"Creating force for node-")
+                    self.force_creation(number_of_node, force, angle)
                 
-                # if same force, then do nothing
+                # if same force, then just need to update the location of the force
                 elif self.list_of_force[number_of_node - 1] == force and self.list_of_angle[number_of_node - 1] == angle:
                      print("DIFF POSITION BUT SAME FORCE")
-                     self.force_creation_E(number_of_node, force, angle)
+                     print("Updating force-")
+                     self.force_update(number_of_node, force, angle)
                 
-                 # if diff force, just update force with new angles and stuff
+                # if diff force, just update force with new angles and stuff
                 elif self.list_of_force[number_of_node - 1] != force or self.list_of_angle[number_of_node - 1] != angle:
-                    self.force_creation_E(number_of_node, force, angle)
-                    print("HEY FORCE WAS REFRESHED with NEW POSITION")
+                    print("DIFF POSITION AND DIFF FORCE")
+                    print("Updating force-")
+                    self.force_update(number_of_node, force, angle)
                 
+                # again if for some reason everything else fails... do this...
                 else:
-                    print("cry again")
-                    print(f" current force {self.list_of_force[number_of_node - 1]} and {self.list_of_angle[number_of_node - 1]}")
-                    print(f" input force {force} and angle {angle}")
+                    print("cry harder") # use this location to debug
 
         return vec(x, y, 0)
-    
-    # create a new 
-    def force_creation(self, node_on_which_current_force_acts, force_applied, angles):
+     
+    def force_creation(self, node_on_which_current_force_acts, force_applied, angles): # to create a force arrow and format for matrix
+        
         node_location = self.list_of_nodes[node_on_which_current_force_acts - 1]
-        print(f"where it gets {node_location}")
+ 
         self.list_of_force[node_on_which_current_force_acts - 1] = force_applied
         self.list_of_angle[node_on_which_current_force_acts - 1] = angles
         
@@ -293,18 +294,14 @@ class GraphicsTools():
         self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
         self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
         
-        print(f"current number of force arrows is {len(self.list_of_force_arrows)} with the number of nodes being {len(self.list_of_angle)}, they should prob be the sname")
+        print(f"Force created successfully-")
         
         return position
 
-    # just update the force position no change to the force itself
-    def force_creation_E(self, node_on_which_current_force_acts, force_applied, angles):
-        print(f"passed force {force_applied} and angle {angles} ")
-        
+    def force_update(self, node_on_which_current_force_acts, force_applied, angles): # just update the force with new position and direction
+      
         node_location = self.list_of_nodes[node_on_which_current_force_acts - 1]
-        print(f"New updated position in backup list is {node_location}")
-        
-        print("passes here")
+
         self.list_of_force[node_on_which_current_force_acts - 1] = force_applied
         self.list_of_angle[node_on_which_current_force_acts - 1] = angles
         
@@ -322,12 +319,10 @@ class GraphicsTools():
         
         offset_from_tail = node_location + hat(position)
         
-        print("passed again")
         self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
-        print("passed a third time")
         self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
         
-        print("Something happened.....")
+        print("Force updated successfully-")
         return position
     
     def calculate_number_of_equations(self): # Needed for correct matrix position
@@ -366,10 +361,8 @@ class GraphicsTools():
         
         # Just update the element with new nodes 
         else:
-            print("Updating element")
+            print(f"Updating element {current_element}-")
             self.element_update(current_element, node_number_1, node_number_2)
-        
-        print("Element creation ended-")
         
     def element_creation(self, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
 
@@ -415,8 +408,8 @@ class GraphicsTools():
 
         self.number_of_current_members += 1
         
-        print(f"Successfully created element {self.number_of_current_members}")
         print("------------")
+        print(f"Successfully created element {self.number_of_current_members} -")
         
     def element_update(self, current_element, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
 
@@ -439,7 +432,7 @@ class GraphicsTools():
         self.element_visual_list[current_element - 1].opacity = 1
         
         self.list_of_elements_label[current_element - 1].pos = 1/2 * a + b
-        self.list_of_elements_label[current_element - 1].visible = True # useful
+        self.list_of_elements_label[current_element - 1].visible = True # useful for future empty list detection
         
         x = node_temp_p.x - node_temp_n.x # As a vector component x
         y = node_temp_p.y - node_temp_n.y # As a vector component y
@@ -456,7 +449,8 @@ class GraphicsTools():
         # needs more testing 
         self.list_of_elements[current_element - 1] = element_AB # holds column matrix, replaces previous 
         
-        print(f"Updated member {self.number_of_current_members} successfully")
+        print("------------")
+        print(f"Updated element {self.number_of_current_members} successfully-")
     
     def create_matrix(self):
         # After all nodes are created this the next thing calculated
