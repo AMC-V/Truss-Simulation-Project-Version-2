@@ -76,6 +76,7 @@ class GraphicsTools():
     known_forces = []
     unknown_forces = []
     master_matrix = []
+    roller_matrix = []
     coeffeicent_matrix = []
 
     def __init__(self): # The constructor for this class that will always be called when first created
@@ -354,7 +355,7 @@ class GraphicsTools():
         i = 1
         # Filling in the known forces matrix
         for force in self.list_of_force_final:
-            print(force)
+            print(f"In list {i} the force is {force} location in martix is {i*2 - 2}")
             self.known_forces[i * 2 - 2][0] = 1 * force.x
             self.known_forces[i * 2 - 1][0] = 1 * force.y # The y transformion for the force on the element AB from A
             i += 1
@@ -501,6 +502,8 @@ class GraphicsTools():
         self.list_of_rollers.append(roller_reactions)
         self.list_of_rollers_ground.append(ground)
         
+        print(roller_reactions)
+        
         # can do this later with a list of supports      
        # self.coeffeicent_matrix = np.hstack((self.master_matrix, roller_reactions))
         
@@ -524,15 +527,13 @@ class GraphicsTools():
                        
         # just stright up overwrite the old one
         self.list_of_rollers[number - 1] = roller_reactions 
+        print(roller_reactions)
         
-        print("------------")
         print(f"Successfully updated roller {number} -")
+        print("------------")
                  
     def roller_check(self, node_number, current_number):
-        
-        # can come even later
-        # self.create_Master_Matrix()
-        
+     
         print(f"{self.number_of_backend_rollers} roller(s) in backend vs current roller {current_number}")
         
         # Check to see if completely new roller has to be created with no roller skips
@@ -565,7 +566,6 @@ class GraphicsTools():
         # Just update the roller with new node 
         else:
             print(f"Updating roller {current_number} -")
-            print("------------")
             self.roller_update(node_number, current_number)
         
                  
@@ -579,7 +579,29 @@ class GraphicsTools():
         print("Sucessfully formulated Master Matrix-")
         print(self.master_matrix)
         
+    def create_Roller_Matrix(self):
+        print("Formulating Roller Matrix-")
+        
+        if len(self.list_of_rollers) > 1:
+            self.roller_matrix = np.concatenate((self.list_of_rollers[0], self.list_of_rollers[1]), axis = 1)
+            for x in arange(0, len(self.list_of_rollers) - 2, 1):
+                self.roller_matrix = np.hstack((self.roller_matrix, self.list_of_rollers[x + 2]))
+        else:
+            self.roller_matrix = self.list_of_rollers[0]
+            
+        print("Sucessfully formulated Roller Matrix-")
+        print(self.roller_matrix)
+        
+        
+        
     def solve_matrix(self):
+        self.create_Master_Matrix()
+        self.create_Roller_Matrix()
+        # can do this later with a list of supports      
+        #self.coeffeicent_matrix = np.hstack((self.master_matrix, self.roller_matrix))
+        self.coeffeicent_matrix = np.concatenate((self.master_matrix, self.roller_matrix), axis = 1)
+        print(self.coeffeicent_matrix)
+        
         print("Solution Matrix")
         self.unknown_forces = (np.linalg.inv(self.coeffeicent_matrix)).dot(self.known_forces)  
         print(self.unknown_forces)
