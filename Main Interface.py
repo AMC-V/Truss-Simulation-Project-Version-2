@@ -1532,7 +1532,7 @@ class ElementWindow(QMainWindow):
             # endregion
 
     def onTextFinal(self,number):
-        print(f" Number of elements are {len(self.list_of_widgets)}.")
+        print(f"Number of elements are {len(self.list_of_widgets)}.")
         yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
         hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
         
@@ -1543,13 +1543,13 @@ class ElementWindow(QMainWindow):
         self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
     
     def onTextFinalR(self, number):
-        print(f" Number of rollers are {len(self.list_of_widgetsR)}.")
+        print(f"Number of rollers are {len(self.list_of_widgetsR)}.")
         yo = self.list_of_widgetsR[number - 1] # gives button based on current total number like 20
         hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
         
         print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
         
-        print("Roller creation started-") # the process really starts from here
+        print("Roller process started-") # the process really starts from here
         print("------------")
         self.lineParsingR(hey[0].text(), number) # if number and label are same then can just replace with number
 
@@ -1570,16 +1570,16 @@ class ElementWindow(QMainWindow):
             
     def lineParsingR(self, text, number):
         try:
-            #i,j = text.split(",") # Grab the text and break it into two parts
-
-            self.Graphics.roller_check(int(text))
+            self.Graphics.roller_check(int(text), number)
                         
             self.list_of_widgets_previous_textR[number - 1] = text # replace zeros with good number
+            print("Roller process completed-")
             print("=======================")
             
         except:
-            print("node created unsuccessfully")
-            print("format was not followed")
+            print("------------")
+            print("Roller process failed-")
+            print("Format was not followed")
             self.cleartext(number)
             print("=======================")
             

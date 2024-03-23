@@ -68,7 +68,12 @@ class GraphicsTools():
     element_visual_list = [] # will hold something
     list_of_unknowns = [] # based on the amount of elements
     
-    known_force = []
+    number_of_backend_rollers = 0
+    list_of_visual_rollers = []
+    list_of_rollers = []
+    list_of_rollers_ground = []
+    
+    known_forces = []
     unknown_forces = []
     master_matrix = []
     coeffeicent_matrix = []
@@ -302,7 +307,7 @@ class GraphicsTools():
         self.list_of_force_arrows[node_on_which_current_force_acts - 1].opacity = 0.75 # reveal the force arrow 
         self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
         self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
-        
+               
         self.list_of_force_final[node_on_which_current_force_acts - 1] = position
         
         print(f"Force created successfully-")
@@ -346,14 +351,17 @@ class GraphicsTools():
     def calculate_known_forces_matrix(self):
         self.known_forces = np.zeros( (self.number_of_equations, 1) )
 
+        i = 1
         # Filling in the known forces matrix
         for force in self.list_of_force_final:
-            i = 0
+            print(force)
             self.known_forces[i * 2 - 2][0] = 1 * force.x
             self.known_forces[i * 2 - 1][0] = 1 * force.y # The y transformion for the force on the element AB from A
             i += 1
+            
+            print(self.known_forces)
     
-    def element_check(self,current_element, node_number_1, node_number_2):
+    def element_check(self, current_element, node_number_1, node_number_2):
         print(f"{self.number_of_current_members} element(s) in backend vs current element {current_element}")
         
         # Check to see if completely new element has to be created with no element skips
@@ -476,8 +484,7 @@ class GraphicsTools():
         print("------------")
         print(f"Updated element {self.number_of_current_members} successfully-")
     
-    def roller_check(self, node_number):
-        self.create_Master_Matrix()
+    def roller_creation(self, node_number, number):
         
         node_roller_reaction = self.list_of_nodes[node_number - 1]
         roller_support = vp.sphere(pos = node_roller_reaction - vec(0 , 0.1 + 0.1, 0), radius=0.1,
@@ -485,12 +492,82 @@ class GraphicsTools():
 
         # Since node n and node p were choosen then in the element np, the force applied there
         roller_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
-        roller_reactions[node_number * 2 - 1][0] = 1 # The x transformion for the force on pin       
-        self.coeffeicent_matrix = np.hstack((self.master_matrix, roller_reactions))
+        roller_reactions[node_number * 2 - 1][0] = 1 # The x transformion for the force on pin 
+        
+        ground = vp.box(pos=roller_support.pos - vec(roller_support.pos.x, roller_support.radius + 0.05, 0), 
+                        size=vec(roller_support.pos.x * 2, 0.1 ,2), texture=vp.textures.wood)
 
-        ground = vp.box(pos=roller_support.pos - vp.vec(roller_support.pos.x, roller_support.radius + 0.05, 0), 
-                        size=vp.vec(roller_support.pos.x * 2, 0.1 ,2), texture=vp.textures.wood)
-        print("Successfully created roller-")
+        self.list_of_visual_rollers.append(roller_support)
+        self.list_of_rollers.append(roller_reactions)
+        self.list_of_rollers_ground.append(ground)
+        
+        # can do this later with a list of supports      
+       # self.coeffeicent_matrix = np.hstack((self.master_matrix, roller_reactions))
+        
+        self.number_of_backend_rollers += 1
+  
+        print(f"Successfully created roller {number} -")
+        print("------------")
+        
+    def roller_update(self, node_number, number):
+        
+        node_roller_reaction = self.list_of_nodes[node_number - 1]
+        q = self.list_of_visual_rollers[number - 1].pos = node_roller_reaction - vec(0 , 0.1 + 0.1, 0)
+        self.list_of_visual_rollers[number - 1].opacity = 1
+
+        # Since node n and node p were choosen then in the element np, the force applied there
+        roller_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
+        roller_reactions[node_number * 2 - 1][0] = 1 # The x transformion for the force on pin 
+        
+        self.list_of_rollers_ground[number - 1].pos = q - vec(q.x, self.list_of_visual_rollers[number - 1].radius + 0.05, 0)
+        self.list_of_rollers_ground[number - 1].opacity = 1
+                       
+        # just stright up overwrite the old one
+        self.list_of_rollers[number - 1] = roller_reactions 
+        
+        print("------------")
+        print(f"Successfully updated roller {number} -")
+                 
+    def roller_check(self, node_number, current_number):
+        
+        # can come even later
+        # self.create_Master_Matrix()
+        
+        print(f"{self.number_of_backend_rollers} roller(s) in backend vs current roller {current_number}")
+        
+        # Check to see if completely new roller has to be created with no roller skips
+        if current_number > self.number_of_backend_rollers and current_number - 1 == self.number_of_backend_rollers: 
+            print(f"Creating roller {current_number} -")
+            self.roller_creation(node_number, current_number) # if so then just create the roller
+        
+        # Here we are skipping a few rollers in the line to create the new roller, so we need to actualize the skipped
+        elif current_number > self.number_of_backend_rollers and current_number - 1 != self.number_of_backend_rollers:
+            print("Trying to actualize an roller without actualizing the previous roller(s)")
+            
+            number_need_to_actualize = (current_number - 1) - self.number_of_backend_rollers # math was done to figure out number
+            
+            # All skipped rollers will be create as transparent dumby placeholders
+            for x_dalta in range(number_need_to_actualize):
+                print(f"Creating skipped roller {self.number_of_backend_rollers + 1}")
+            
+                # for dumby rollers just default to picking the first node and row number 1
+                self.roller_creation(1, self.number_of_backend_rollers + 1) # if the first node don't exist then think of something else
+                
+                # then change the opacity of these dumby rollers
+                self.list_of_visual_rollers[self.number_of_backend_rollers - 1].opacity = .5
+                self.list_of_rollers_ground[self.number_of_backend_rollers - 1].opacity = .5
+            
+            # Now created desired roller  
+            print(f"Creating roller {current_number} -")  
+            self.roller_creation(node_number, current_number)
+            print("Complex operation conducted successfully")
+        
+        # Just update the roller with new node 
+        else:
+            print(f"Updating roller {current_number} -")
+            print("------------")
+            self.roller_update(node_number, current_number)
+        
                  
     def create_Master_Matrix(self):
         print("Formulating Master Matrix-")
