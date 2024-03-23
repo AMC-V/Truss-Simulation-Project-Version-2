@@ -57,14 +57,21 @@ class GraphicsTools():
     list_of_nodes = [] # Will contain all nodes and serves as the backup list to check incoming data
     list_of_spheres = []
     list_of_labels = []
+    
     list_of_force = []
     list_of_angle = []
     list_of_force_arrows = []
+    list_of_force_final = []
     
     list_of_elements = [] # Will contain all the elements, connections between nodes, also the number of unknowns
     list_of_elements_label = []
     element_visual_list = [] # will hold something
     list_of_unknowns = [] # based on the amount of elements
+    
+    known_force = []
+    unknown_forces = []
+    master_matrix = []
+    coeffeicent_matrix = []
 
     def __init__(self): # The constructor for this class that will always be called when first created
         # region Gobal Coordiante System 
@@ -195,6 +202,7 @@ class GraphicsTools():
         # Very important that the assicoted force to a node is created here, as the force creation method relies on the results here
         self.list_of_force.append(0) # leave a placeholder in the list for the node's force
         self.list_of_angle.append(0) # leave a placeholder in the list for the node's angle
+        self.list_of_force_final.append(vec(0,0,0))
         
         self.list_of_force_arrows.append(vp.arrow(pos = vec(0,0,0,), axis = vec(0,0,0), color = 1/255 * vec(236, 215, 16), opacity = 0))
         
@@ -278,6 +286,7 @@ class GraphicsTools():
         
         angle = radians(angles)
 
+        # if numbers are weird in the future try adjusting them here
         force_x = force_applied * cos(angle)
         if abs(force_x) < 0.1000:
             force_x = 0
@@ -294,9 +303,9 @@ class GraphicsTools():
         self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
         self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
         
-        print(f"Force created successfully-")
+        self.list_of_force_final[node_on_which_current_force_acts - 1] = position
         
-        return position
+        print(f"Force created successfully-")
 
     def force_update(self, node_on_which_current_force_acts, force_applied, angles): # just update the force with new position and direction
       
@@ -322,13 +331,28 @@ class GraphicsTools():
         self.list_of_force_arrows[node_on_which_current_force_acts -1].pos = offset_from_tail
         self.list_of_force_arrows[node_on_which_current_force_acts -1].axis = node_location - offset_from_tail
         
+        self.list_of_force_final[node_on_which_current_force_acts - 1] = position
+        
         print("Force updated successfully-")
-        return position
     
     def calculate_number_of_equations(self): # Needed for correct matrix position
         self.number_of_equations = 2 * self.number_of_nodes # Total number of equations based on number of nodes, now 3 nodes, assume clean data
         print(f"Total number of equations are {self.number_of_equations}")
+        print("Formulating Known Forces Matrix-")
+        self.calculate_known_forces_matrix()
+        print("Successfully formulated Known Forces Matrix-")
+        print(self.known_forces)
         
+    def calculate_known_forces_matrix(self):
+        self.known_forces = np.zeros( (self.number_of_equations, 1) )
+
+        # Filling in the known forces matrix
+        for force in self.list_of_force_final:
+            i = 0
+            self.known_forces[i * 2 - 2][0] = 1 * force.x
+            self.known_forces[i * 2 - 1][0] = 1 * force.y # The y transformion for the force on the element AB from A
+            i += 1
+    
     def element_check(self,current_element, node_number_1, node_number_2):
         print(f"{self.number_of_current_members} element(s) in backend vs current element {current_element}")
         
@@ -452,6 +476,37 @@ class GraphicsTools():
         print("------------")
         print(f"Updated element {self.number_of_current_members} successfully-")
     
-    def create_matrix(self):
-        # After all nodes are created this the next thing calculated
-        self.number_of_equations = 2 * self.number_of_nodes # Total number of equations based on number of nodes, now 3 nodes, assume clean data
+    def roller_check(self, node_number):
+        self.create_Master_Matrix()
+        
+        node_roller_reaction = self.list_of_nodes[node_number - 1]
+        roller_support = vp.sphere(pos = node_roller_reaction - vec(0 , 0.1 + 0.1, 0), radius=0.1,
+                                texture = vp.textures.granite)
+
+        # Since node n and node p were choosen then in the element np, the force applied there
+        roller_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
+        roller_reactions[node_number * 2 - 1][0] = 1 # The x transformion for the force on pin       
+        self.coeffeicent_matrix = np.hstack((self.master_matrix, roller_reactions))
+
+        ground = vp.box(pos=roller_support.pos - vp.vec(roller_support.pos.x, roller_support.radius + 0.05, 0), 
+                        size=vp.vec(roller_support.pos.x * 2, 0.1 ,2), texture=vp.textures.wood)
+        print("Successfully created roller-")
+                 
+    def create_Master_Matrix(self):
+        print("Formulating Master Matrix-")
+        
+        self.master_matrix = np.concatenate((self.list_of_elements[0], self.list_of_elements[1]), axis = 1)
+        for x in arange(0, len(self.list_of_elements) - 2, 1):
+            self.master_matrix = np.hstack((self.master_matrix, self.list_of_elements[x + 2]))
+            
+        print("Sucessfully formulated Master Matrix-")
+        print(self.master_matrix)
+        
+    def solve_matrix(self):
+        print("Solution Matrix")
+        self.unknown_forces = (np.linalg.inv(self.coeffeicent_matrix)).dot(self.known_forces)  
+        print(self.unknown_forces)
+        print("===========================================")
+        
+        
+        

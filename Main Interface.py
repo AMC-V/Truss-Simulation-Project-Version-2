@@ -1424,7 +1424,7 @@ class ElementWindow(QMainWindow):
         print("going back")
         
     def onClickC(self):
-        print("Yahhh")
+        self.Graphics.solve_matrix()
         
     def onClickR(self):
         self.createMinorRollerResponse(len(self.list_of_widgetsR) + 1) # before element gets added         
@@ -1542,14 +1542,14 @@ class ElementWindow(QMainWindow):
         print("------------")
         self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
     
-    def onTextFinalR(self,number):
+    def onTextFinalR(self, number):
         print(f" Number of rollers are {len(self.list_of_widgetsR)}.")
         yo = self.list_of_widgetsR[number - 1] # gives button based on current total number like 20
         hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
         
         print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
         
-        print("Element creation started-") # the process really starts from here
+        print("Roller creation started-") # the process really starts from here
         print("------------")
         self.lineParsingR(hey[0].text(), number) # if number and label are same then can just replace with number
 
@@ -1570,9 +1570,9 @@ class ElementWindow(QMainWindow):
             
     def lineParsingR(self, text, number):
         try:
-            i,j = text.split(",") # Grab the text and break it into two parts
+            #i,j = text.split(",") # Grab the text and break it into two parts
 
-            self.Graphics.roller_check(number, int(i), int(j))
+            self.Graphics.roller_check(int(text))
                         
             self.list_of_widgets_previous_textR[number - 1] = text # replace zeros with good number
             print("=======================")
@@ -1582,7 +1582,6 @@ class ElementWindow(QMainWindow):
             print("format was not followed")
             self.cleartext(number)
             print("=======================")
-      
             
     def cleartext(self, number):
         yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
