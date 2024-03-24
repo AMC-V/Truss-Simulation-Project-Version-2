@@ -73,6 +73,11 @@ class GraphicsTools():
     list_of_rollers = []
     list_of_rollers_ground = []
     
+    number_of_backend_pins = 0
+    list_of_visual_pins = []
+    list_of_pins = []
+    list_of_pins_ground = []
+    
     known_forces = []
     unknown_forces = []
     master_matrix = []
@@ -564,7 +569,78 @@ class GraphicsTools():
         else:
             print(f"Updating roller {current_number} -")
             self.roller_update(node_number, current_number)
-                    
+
+    def pin_creation(self, node_number, number):
+        
+        node_pin_reaction = self.list_of_nodes[node_number - 1]
+        
+        pin_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
+        pin_reactions[node_number * 2 - 2][0] = 1 # The x transformion for the force on pin
+        
+        # more work to be done at matrix
+        master_matrix = np.hstack((master_matrix, pin_reactions))
+
+        pin_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
+        pin_reactions[node_number * 2 - 1][0] = 1 # The y transformion for the force on pin
+     
+        # needed to find correct spacing 
+        pin_supportR = vp.sphere(pos = node_pin_reaction - vec(0 , 0.1 + 0.1, 0), radius=0.1,
+                                texture = vp.textures.granite, opacity = 0)
+     
+        ground = vp.box(pos = pin_supportR.pos - vec(0, pin_supportR.radius + 0.5, 0), 
+                        size = vec(1, 1 ,1), texture = vp.textures.wood)
+
+        pin_support = vp.pyramid(pos = vec(node_pin_reaction.x, ground.pos.y + 0.05, 0), 
+                         size = vec(node_pin_reaction.y - ground.pos.y , 0.5, 0.5),
+                         axis = vec(0, 1, 0), texture = vp.textures.granite)
+        
+        self.list_of_visual_pins.append(pin_support)
+        self.list_of_pins.append(pin_reactions)
+        self.list_of_pins_ground.append(ground)
+        
+        print(pin_reactions)
+             
+        self.number_of_backend_pins += 1
+  
+        print(f"Successfully created pin {number} -")
+        print("------------")
+
+    def pin_check(self, node_number, current_number):
+     
+        print(f"{self.number_of_backend_pins} pin(s) in backend vs current pin {current_number}")
+        
+        # Check to see if completely new pin has to be created with no pin skips
+        if current_number > self.number_of_backend_pins and current_number - 1 == self.number_of_backend_pins: 
+            print(f"Creating pin {current_number} -")
+            self.pin_creation(node_number, current_number)
+        
+        # Here we are skipping a few pins in the line to create the new pin, so we need to actualize the skipped
+        elif current_number > self.number_of_backend_pins and current_number - 1 != self.number_of_backend_pins:
+            print("Trying to actualize an pin without actualizing the previous pin(s)")
+            
+            number_need_to_actualize = (current_number - 1) - self.number_of_backend_pins # math was done to figure out number
+            
+            # All skipped pins will be create as transparent dumby placeholders
+            for x_dalta in range(number_need_to_actualize):
+                print(f"Creating skipped pin {self.number_of_backend_pins + 1}")
+            
+                # for dumby pins just default to picking the first node and row number 1
+                self.pin_creation(1, self.number_of_backend_pins + 1) # if the first node don't exist then think of something else
+                
+                # then change the opacity of these dumby pins
+                self.list_of_visual_pins[self.number_of_backend_pins - 1].opacity = 0
+                self.list_of_pins_ground[self.number_of_backend_pins - 1].opacity = 0
+            
+            # Now created desired roller  
+            print(f"Creating pin {current_number} -")  
+            self.pin_creation(node_number, current_number)
+            print("Complex operation conducted successfully")
+        
+        # Just update the pin with new node 
+        else:
+            print(f"Updating pin {current_number} -")
+            self.pin_update(node_number, current_number)
+                 
     def create_Master_Matrix(self):
         print("Formulating Master Matrix-")
         
