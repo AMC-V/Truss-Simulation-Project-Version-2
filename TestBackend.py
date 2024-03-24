@@ -495,18 +495,15 @@ class GraphicsTools():
         roller_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
         roller_reactions[node_number * 2 - 1][0] = 1 # The x transformion for the force on pin 
         
-        ground = vp.box(pos=roller_support.pos - vec(roller_support.pos.x, roller_support.radius + 0.05, 0), 
-                        size=vec(roller_support.pos.x * 2, 0.1 ,2), texture=vp.textures.wood)
+        ground = vp.box(pos = roller_support.pos - vec(0, roller_support.radius + 0.5, 0), 
+                        size = vec(1, 1 ,1), texture = vp.textures.wood)
 
         self.list_of_visual_rollers.append(roller_support)
         self.list_of_rollers.append(roller_reactions)
         self.list_of_rollers_ground.append(ground)
         
         print(roller_reactions)
-        
-        # can do this later with a list of supports      
-       # self.coeffeicent_matrix = np.hstack((self.master_matrix, roller_reactions))
-        
+             
         self.number_of_backend_rollers += 1
   
         print(f"Successfully created roller {number} -")
@@ -522,7 +519,7 @@ class GraphicsTools():
         roller_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
         roller_reactions[node_number * 2 - 1][0] = 1 # The x transformion for the force on pin 
         
-        self.list_of_rollers_ground[number - 1].pos = q - vec(q.x, self.list_of_visual_rollers[number - 1].radius + 0.05, 0)
+        self.list_of_rollers_ground[number - 1].pos = q - vec(0, self.list_of_visual_rollers[number - 1].radius + 0.5, 0)
         self.list_of_rollers_ground[number - 1].opacity = 1
                        
         # just stright up overwrite the old one
@@ -555,8 +552,8 @@ class GraphicsTools():
                 self.roller_creation(1, self.number_of_backend_rollers + 1) # if the first node don't exist then think of something else
                 
                 # then change the opacity of these dumby rollers
-                self.list_of_visual_rollers[self.number_of_backend_rollers - 1].opacity = .5
-                self.list_of_rollers_ground[self.number_of_backend_rollers - 1].opacity = .5
+                self.list_of_visual_rollers[self.number_of_backend_rollers - 1].opacity = 0
+                self.list_of_rollers_ground[self.number_of_backend_rollers - 1].opacity = 0
             
             # Now created desired roller  
             print(f"Creating roller {current_number} -")  
@@ -567,8 +564,7 @@ class GraphicsTools():
         else:
             print(f"Updating roller {current_number} -")
             self.roller_update(node_number, current_number)
-        
-                 
+                    
     def create_Master_Matrix(self):
         print("Formulating Master Matrix-")
         
@@ -592,8 +588,6 @@ class GraphicsTools():
         print("Sucessfully formulated Roller Matrix-")
         print(self.roller_matrix)
         
-        
-        
     def solve_matrix(self):
         self.create_Master_Matrix()
         self.create_Roller_Matrix()
@@ -605,7 +599,4 @@ class GraphicsTools():
         print("Solution Matrix")
         self.unknown_forces = (np.linalg.inv(self.coeffeicent_matrix)).dot(self.known_forces)  
         print(self.unknown_forces)
-        print("===========================================")
-        
-        
-        
+        print("===========================================") 

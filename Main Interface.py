@@ -1354,10 +1354,239 @@ class ElementWindow(QMainWindow):
         #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
         # endregion
         #****************************************
-        
-        # next thing
-        
         # endregion 
+        
+        # region Primary Pin Response
+        #****************************************
+        # region Primary Pin Response Widget and Layout Creation
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # The Engineering Supports Response Main Struture
+        self.ESPResponseContainer = QFrame() # Contains all the reponses and heading, will contain the ESResponseLayout
+
+        # The Engineering Supports Response Main Layout
+        self.ESPResponseLayout = QVBoxLayout() # Every Major Widget will be added here, goes downwards, three Major Widgets Label, Input Area, and add button
+        self.ESPResponseLayout.setSpacing(0)  
+        self.ESPResponseLayout.setContentsMargins(0,0,0,6)
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Pin Supports Response Content
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # region Major Engineering Supports Label 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Engineering Supports Label Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Engineering Supports Label Main Struture
+        self.ESPlabelContainer = QWidget() # Contains all the info labels, will contain the elementLabelLayout
+        self.ESPlabelContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+    
+        # The Engineering Supports Label Main Layout
+        self.ESPlabelLayout = QHBoxLayout() # Every Minor Widget will be added here, goes sideways, formatting
+        self.ESPlabelLayout.setSpacing(0) 
+        self.ESPlabelLayout.setContentsMargins(0,0,0,0)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering SupportsElement Label Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Minor Widgets
+        self.indexLabelESP = QLabel("#")
+        self.indexLabelESP.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em;
+                                    
+                                    background-color: rgba(0,0,0,0);""")
+        
+        self.nodeLabelESP = QLabel("Pin")
+        self.nodeLabelESP.setStyleSheet("""
+                                    min-width: 5em;
+                                    max-width: 5em;
+                            
+                                    background-color: rgba(0,0,0,0);
+        
+                                    qproperty-alignment: AlignLeft;""")        
+        
+        self.deleteLabelESP = QLabel("Delete")
+        self.deleteLabelESP.setStyleSheet("""
+                                    min-width: 2.35em;
+                                    max-width: 2.35em;
+                                
+                                    background-color: rgba(0,0,0,0);""")
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering Supports Label Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Node Label Main Layout
+        self.ESPlabelLayout.addWidget(self.indexLabelESP)
+        self.ESPlabelLayout.addWidget(self.nodeLabelESP)
+        self.ESPlabelLayout.addWidget(self.deleteLabelESP)
+        
+        #self.labelLayout.setAlignment(self.indexLabel, Qt.AlignLeft)
+        self.ESPlabelLayout.setAlignment(self.nodeLabelESP, Qt.AlignLeft)
+        self.ESPlabelLayout.setAlignment(self.deleteLabelESP, Qt.AlignCenter) 
+        
+        # Setting the Node Label Main Layout to the Node Label Main Struture
+        self.ESPlabelContainer.setLayout(self.ESPlabelLayout)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Engineering Supports Input Area 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Engineering Supports Input Area Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Engineering Supports Input Area Main Struture
+        self.ESPInputScorllArea = QScrollArea() # Controls the Scroll Area for the Widget that contains all the inputs
+        self.ESPInputScorllArea.setWidgetResizable(True)
+        self.ESPInputScorllArea.setMinimumHeight(45)
+        self.ESPInputScorllArea.setStyleSheet("""border-color: rgba(0,0,0,0);
+                                                background-color: black;""")
+        
+        # The Engineering Supports Input Area Main Sub-Struture
+        self.ESPInputScrollAreaWidget = QWidget() # Widget that will hold all inputs, will be the central widget for nodeInputScrollArea, will contain the nodeInputScrollAreaWidgetLayout
+        self.ESPInputScrollAreaWidget.setContentsMargins(0,0,0,0)
+        self.ESPInputScrollAreaWidget.setStyleSheet("""border: none;
+                                background-color: rgba(0,0,0,0);""")
+        
+        # The Engineering Supports Input Area Main Sub-Layout
+        self.ESPInputScrollAreaWidgetLayout = QVBoxLayout() # Every addition input will be added here, Minor Widget will be added here, goes downwards, one Minor Widget Input, non formatting
+        self.ESPInputScrollAreaWidgetLayout.setSpacing(0)
+        self.ESPInputScrollAreaWidgetLayout.setContentsMargins(0,0,0,0) 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering Supports Input Area Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # region Minor Engineering Supports Input 
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # region Minor Engineering Supports Input Widget and Layout Creation
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # The Engineering Supports Input Main Struture
+        self.ESPInputContainer = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
+
+        #The Engineering Supports Input Main Layout
+        self.ESPInputLayout = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
+        self.ESPInputLayout.setSpacing(0)
+        self.ESPInputLayout.setContentsMargins(0,0,0,3)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input Content
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Tiny Widgets
+        self.indexNumberESP = QLabel("1")
+        self.indexNumberESP.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em; """)
+        
+        self.genericInputESP = QLineEdit()
+        self.genericInputESP.editingFinished.connect(lambda: self.onTextFinalRP(1)) #textChanged
+        self.genericInputESP.setAlignment(Qt.AlignCenter)
+        self.genericInputESP.setStyleSheet("background-color: white;")
+        
+        self.deleteESP = QRadioButton()
+        self.deleteESP.setDisabled(True)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input addition and layout
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Adding Tiny to The Node Input Main Layout
+        self.ESPInputLayout.addWidget(self.indexNumberESP)
+        self.ESPInputLayout.addWidget(self.genericInputESP)
+        self.ESPInputLayout.addWidget(self.deleteESP)
+        
+        self.ESPInputLayout.setAlignment(self.genericInputESP, Qt.AlignLeft)
+        self.ESPInputLayout.setAlignment(self.deleteESP, Qt.AlignCenter) 
+        
+        # Setting the Engineering Supports Input Main Layout to the Engineering Supports Input Main Struture
+        self.ESPInputContainer.setLayout(self.ESPInputLayout)
+        
+        # list of widgets for roller
+        self.list_of_widgetsRP = []
+        self.list_of_widgetsRP.append(self.ESPInputContainer)
+        
+        self.list_of_widgets_previous_textRP = []
+        self.list_of_widgets_previous_textRP.append("0,0") # first always there 
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # endregion
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+    
+        # region Major Engineering Supports Input Area Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Engineering Supports Input Area Main Sub-Layout
+        self.ESPInputScrollAreaWidgetLayout.addWidget(self.ESPInputContainer)
+        
+        # Setting the Engineering Supports Input Area Main Sub-Layout to the Engineering Supports Input Area Main Sub-Struture
+        self.ESPInputScrollAreaWidget.setLayout(self.ESPInputScrollAreaWidgetLayout)
+
+        # Setting the Engineering Supports Input Area Main Sub-Struture to the Engineering Supports Input Area Main Struture
+        self.ESPInputScorllArea.setWidget(self.ESPInputScrollAreaWidget)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Add Engineering Supports Button Sub-Sub-Section
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Add Element Button Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.ESPbuttonsLayout = QHBoxLayout()
+        self.ESPbuttonsLayout.setSpacing(0) 
+        self.ESPbuttonsLayout.setContentsMargins(0,0,0,0)
+        
+        self.ESPbuttonsContainer = QWidget()
+        self.ESPbuttonsContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+        
+        # None needed since it will be added to bottom and centered 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Element Button Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^          
+        self.addElementButtonESP = QPushButton()
+        self.addElementButtonESP.setText("Add Pin")
+        self.addElementButtonESP.setStyleSheet("""
+                                            min-width: 5.3em;
+                                            max-width: 5.3em;
+                                                """)
+        self.addElementButtonESP.clicked.connect(lambda: self.onClickRP())
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Engineering Supports Button addition and actualization
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #self.ESbuttonsLayout.addWidget(self.addElementButtonES)
+        
+        #self.ESbuttonsContainer.setLayout(self.ESbuttonsLayout)
+        # none needed since already widget and so will be added directly to node response layout 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Pin Supports Response Content addition and Actualization
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # Adding Major to Engineering Supports Response Main Layout
+        self.ESPResponseLayout.addWidget(self.ESPlabelContainer)
+        self.ESPResponseLayout.addWidget(self.ESPInputScorllArea) # chnge it back here
+        self.ESPResponseLayout.addWidget(self.addElementButtonESP)
+        
+        self.ESPResponseLayout.setAlignment(self.addElementButtonESP, Qt.AlignCenter)
+
+        # Setting the Engineering Supports Response Main Layout to the Engineering Supports Response Main Struture
+        self.ESPResponseContainer.setLayout(self.ESPResponseLayout) 
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion
+        #****************************************
+        # endregion
         #----------------------------------------
         # endregion
         
@@ -1366,6 +1595,7 @@ class ElementWindow(QMainWindow):
         # Adding Primary to Second Main Layout
         self.ESLayout.addWidget(self.noteContainer) # Added to Super Container Layout
         self.ESLayout.addWidget(self.ESResponseContainer)
+        self.ESLayout.addWidget(self.ESPResponseContainer)
 
         # Setting the Second Main Layout to the Second Main Struture 
         self.ESContainer.setLayout(self.ESLayout) # This will be added to MainLayout
@@ -1428,6 +1658,10 @@ class ElementWindow(QMainWindow):
         
     def onClickR(self):
         self.createMinorRollerResponse(len(self.list_of_widgetsR) + 1) # before element gets added         
+        self.repaint()
+        
+    def onClickRP(self):
+        self.createMinorPinResponse(len(self.list_of_widgetsRP) + 1)
         self.repaint()
         
     def createMinorElementResponse(self, number):
@@ -1531,6 +1765,59 @@ class ElementWindow(QMainWindow):
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # endregion
 
+    def createMinorPinResponse(self, number):
+        # region Minor Engineering Supports Input Widget and Layout Creation
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # The Engineering Supports Input Main Struture
+        self.ESPInputContainerG = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
+
+        #The Engineering Supports Input Main Layout
+        self.ESPInputLayoutG = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
+        self.ESPInputLayoutG.setSpacing(0)
+        self.ESPInputLayoutG.setContentsMargins(0,0,0,3)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input Content
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Tiny Widgets
+        self.indexNumberESGP = QLabel(f'{number}')
+        self.indexNumberESGP.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em; """)
+        
+        self.genericInputESGP = QLineEdit()
+        self.genericInputESGP.setAlignment(Qt.AlignCenter)
+        self.genericInputESGP.setStyleSheet("background-color: white;")
+        
+        self.deleteESGP = QRadioButton()
+        self.deleteESGP.setDisabled(True)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input addition and layout
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Adding Tiny to The Node Input Main Layout
+        self.ESPInputLayoutG.addWidget(self.indexNumberESGP)
+        self.ESPInputLayoutG.addWidget(self.genericInputESGP)
+        self.ESPInputLayoutG.addWidget(self.deleteESGP)
+        
+        self.ESPInputLayoutG.setAlignment(self.genericInputESGP, Qt.AlignLeft)
+        self.ESPInputLayoutG.setAlignment(self.deleteESGP, Qt.AlignCenter) 
+        
+        # Setting the Engineering Supports Input Main Layout to the Engineering Supports Input Main Struture
+        self.ESPInputContainerG.setLayout(self.ESPInputLayoutG)
+        
+        # list of widgets for roller
+        self.list_of_widgetsRP.append(self.ESPInputContainerG)
+        self.list_of_widgets_previous_textRP.append("0,0") #store preivous good text
+        
+        self.genericInputESGP.editingFinished.connect(lambda: self.onTextFinalRP(number)) #textChanged
+        
+        self.ESPInputScrollAreaWidgetLayout.addWidget(self.ESPInputContainerG)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+
     def onTextFinal(self,number):
         print(f"Number of elements are {len(self.list_of_widgets)}.")
         yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
@@ -1552,6 +1839,17 @@ class ElementWindow(QMainWindow):
         print("Roller process started-") # the process really starts from here
         print("------------")
         self.lineParsingR(hey[0].text(), number) # if number and label are same then can just replace with number
+
+    def onTextFinalRP(self, number):
+        print(f"Number of pins are {len(self.list_of_widgetsRP)}.")
+        yo = self.list_of_widgetsRP[number - 1] # gives button based on current total number like 20
+        hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
+        
+        print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
+        
+        print("Pin process started-") # the process really starts from here
+        print("------------")
+        self.lineParsingRP(hey[0].text(), number) # if number and label are same then can just replace with number
 
     def lineParsing(self, text, number):
         try:
@@ -1582,7 +1880,22 @@ class ElementWindow(QMainWindow):
             print("Format was not followed")
             self.cleartext(number)
             print("=======================")
+    
+    def lineParsingRP(self, text, number):
+        try:
+            self.Graphics.pin_check(int(text), number)
+                        
+            self.list_of_widgets_previous_textRP[number - 1] = text # replace zeros with good number
+            print("Pin process completed-")
+            print("=======================")
             
+        except:
+            print("------------")
+            print("Pin process failed-")
+            print("Format was not followed")
+            self.cleartext(number)
+            print("=======================")
+         
     def cleartext(self, number):
         yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
         
