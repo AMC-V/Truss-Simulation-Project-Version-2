@@ -645,10 +645,10 @@ class GraphicsTools():
         # needed to find correct spacing 
         s = self.list_of_pins_spacing[number - 1].pos = node_pin_reaction - vec(0 , 0.1 + 0.1, 0)
      
-        g = self.list_of_pins_ground[number - 1].pos = s.pos - vec(0, s.radius + 0.5, 0)
+        g = self.list_of_pins_ground[number - 1].pos = s - vec(0, self.list_of_pins_spacing[number - 1].radius + 0.5, 0)
         self.list_of_pins_ground[number - 1].opacity = 1
      
-        self.list_of_visual_pins[number - 1].pos = vec(node_pin_reaction.x, g.pos.y + 0.05, 0)
+        self.list_of_visual_pins[number - 1].pos = vec(node_pin_reaction.x, g.y + 0.05, 0)
         self.list_of_visual_pins[number - 1].opacity = 1
  
         print(f"Successfully updated pin {number} -")
@@ -693,10 +693,13 @@ class GraphicsTools():
     def create_Master_Matrix(self):
         print("Formulating Master Matrix-")
         
-        self.master_matrix = np.concatenate((self.list_of_elements[0], self.list_of_elements[1]), axis = 1)
-        for x in arange(0, len(self.list_of_elements) - 2, 1):
-            self.master_matrix = np.hstack((self.master_matrix, self.list_of_elements[x + 2]))
-            
+        if len(self.master_matrix) > 1:
+            self.master_matrix = np.concatenate((self.list_of_elements[0], self.list_of_elements[1]), axis = 1)
+            for x in arange(0, len(self.list_of_elements) - 2, 1):
+                self.master_matrix = np.hstack((self.master_matrix, self.list_of_elements[x + 2]))    
+        else:
+            self.master_matrix = self.list_of_elements[0]
+        
         print("Sucessfully formulated Master Matrix-")
         print(self.master_matrix)
         
@@ -719,13 +722,15 @@ class GraphicsTools():
         elif len(self.list_of_pins)  == 1:
             self.pin_matrix = self.list_of_pins[0]
   
-        type(self.roller_matrix)
+        print(type(self.roller_matrix))
+        print(type(5))
+        print(type(self.pin_matrix))
   
-        if type(self.roller_matrix) == type(int):
+        if type(self.roller_matrix) == type(0):
             print("case ")
             self.engineering_support_matrix = self.pin_matrix
             
-        elif type(self.pin_matrix) == type(int):
+        elif type(self.pin_matrix) == type(0):
             self.engineering_support_matrix = self.roller_matrix
             
         else:
