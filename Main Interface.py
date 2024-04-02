@@ -791,451 +791,1121 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         pass
 
 class ElementWindow(QMainWindow):
-        def __init__(self, bah): # The constructor for this class that will always be called when first created
-            super().__init__() # Call the constructor of the parent class and return a object of the parent
-            self.setGeometry(1420, 50, 100, 100) # Set spawn position of window and inital size
-            self.setMaximumWidth(100)
-            self.setMaximumHeight(1500)
-            self.setWindowTitle("INSIGHT")
-            self.createElementWindow() # In constructor call another method
-            self.Graphics = bah
-          
-        def createElementWindow(self):
-            # region Window Widget and Layout Creation
-            #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            self.canvas = QWidget() # a blank widget that will only hold the primary layout for widgets        
-            self.mainLayout = QHBoxLayout() # As we add stuff it will be placed horizatonally
-            #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            # endregion
-            
-            # region Window Content
-            #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            # region Main Element Section
-            #========================================
-            # region Main Element Section Widget and Layout Creation
-            #----------------------------------------
-            # The Second Main Struture
-            self.ElementContainer = QGroupBox("Element") # Contains all node related things, will contain the nodeLayout
-            self.ElementContainer.setFixedWidth(550) # Has same coloring as MainWindow Widget
-            
-            # The Second Main Layout
-            self.ElementLayout = QVBoxLayout()  # Every Primary Widget will be added here, goes downwards, two Primaries Note and Response
-            self.ElementLayout.setSpacing(4) # The space inbetween widgets in node layout
-            self.ElementLayout.setContentsMargins(6,0,6,6) # The space inbetween the ends of the groupbox and the widgets inside
-            #----------------------------------------
-            # endregion
-            
-            # region Main Element Section Content
-            #----------------------------------------
-            # region Primary Element Note
-            #****************************************
-            self.createInfoLabel("Enter an element as int,int.") # Creates a widget called noteCotainer 
-            #****************************************
-            # endregion
-                
-            # region Primary Element Response
-            #****************************************
-            # region Primary Element Response Widget and Layout Creation
-            #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            # The Element Response Main Struture
-            self.ElementResponseContainer = QFrame() # Contains all the reponses and heading, will contain the nodeResponseLayout
-    
-            # The Element Response Main Layout
-            self.ElementResponseLayout = QVBoxLayout() # Every Major Widget will be added here, goes downwards, three Major Widgets Label, Input Area, and add button
-            self.ElementResponseLayout.setSpacing(0)  
-            self.ElementResponseLayout.setContentsMargins(0,0,0,6)
-            #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            # endregion 
-            
-            # region Primary Element Response Content
-            #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            # region Major Element Label 
-            #++++++++++++++++++++++++++++++++++++++++
-            # region Major Element Label Widget and Layout Creation
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # The Element Label Main Struture
-            self.labelContainer = QWidget() # Contains all the info labels, will contain the elementLabelLayout
-            self.labelContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+    def __init__(self, bah): # The constructor for this class that will always be called when first created
+        super().__init__() # Call the constructor of the parent class and return a object of the parent
+        self.setGeometry(1420, 50, 100, 100) # Set spawn position of window and inital size
+        self.setMaximumWidth(100)
+        self.setMaximumHeight(1500)
+        self.setWindowTitle("INSIGHT")
+        self.createElementWindow() # In constructor call another method
+        self.Graphics = bah
         
-            # The Element Label Main Layout
-            self.labelLayout = QHBoxLayout() # Every Minor Widget will be added here, goes sideways, formatting
-            self.labelLayout.setSpacing(0) 
-            self.labelLayout.setContentsMargins(0,0,0,0)
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    def createElementWindow(self):
+        # region Window Widget and Layout Creation
+        #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        self.canvas = QWidget() # a blank widget that will only hold the primary layout for widgets        
+        self.mainLayout = QHBoxLayout() # As we add stuff it will be placed horizatonally
+        #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        # endregion
+        
+        # region Window Content
+        #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        # region Main Element Section
+        #========================================
+        # region Main Element Section Widget and Layout Creation
+        #----------------------------------------
+        # The Second Main Struture
+        self.ElementContainer = QGroupBox("Elements") # Contains all node related things, will contain the nodeLayout
+        self.ElementContainer.setFixedWidth(550) # Has same coloring as MainWindow Widget
+        
+        # The Second Main Layout
+        self.ElementLayout = QVBoxLayout()  # Every Primary Widget will be added here, goes downwards, two Primaries Note and Response
+        self.ElementLayout.setSpacing(4) # The space inbetween widgets in node layout
+        self.ElementLayout.setContentsMargins(6,0,6,6) # The space inbetween the ends of the groupbox and the widgets inside
+        #----------------------------------------
+        # endregion
+        
+        # region Main Element Section Content
+        #----------------------------------------
+        # region Primary Element Note
+        #****************************************
+        self.createInfoLabel("Enter an element as int,int.") # Creates a widget called noteCotainer 
+        #****************************************
+        # endregion
+            
+        # region Primary Element Response
+        #****************************************
+        # region Primary Element Response Widget and Layout Creation
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # The Element Response Main Struture
+        self.ElementResponseContainer = QFrame() # Contains all the reponses and heading, will contain the nodeResponseLayout
+
+        # The Element Response Main Layout
+        self.ElementResponseLayout = QVBoxLayout() # Every Major Widget will be added here, goes downwards, three Major Widgets Label, Input Area, and add button
+        self.ElementResponseLayout.setSpacing(0)  
+        self.ElementResponseLayout.setContentsMargins(0,0,0,6)
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Element Response Content
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # region Major Element Label 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Element Label Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Element Label Main Struture
+        self.labelContainer = QWidget() # Contains all the info labels, will contain the elementLabelLayout
+        self.labelContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+    
+        # The Element Label Main Layout
+        self.labelLayout = QHBoxLayout() # Every Minor Widget will be added here, goes sideways, formatting
+        self.labelLayout.setSpacing(0) 
+        self.labelLayout.setContentsMargins(0,0,0,0)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Element Label Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Minor Widgets
+        self.indexLabelElement = QLabel("#")
+        self.indexLabelElement.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em;
+                                    
+                                    background-color: rgba(0,0,0,0);""")
+        
+        self.positionLabel = QLabel("Element")
+        self.positionLabel.setStyleSheet("""
+                                    min-width: 5em;
+                                    max-width: 5em;
+                            
+                                    background-color: rgba(0,0,0,0);
+        
+                                    qproperty-alignment: AlignLeft;""")        
+        
+        self.deleteLabel = QLabel("Delete")
+        self.deleteLabel.setStyleSheet("""
+                                    min-width: 2.35em;
+                                    max-width: 2.35em;
+                                
+                                    background-color: rgba(0,0,0,0);""")
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Element Label Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Node Label Main Layout
+        self.labelLayout.addWidget(self.indexLabelElement)
+        self.labelLayout.addWidget(self.positionLabel)
+        self.labelLayout.addWidget(self.deleteLabel)
+        
+        # Note: I have no idea why this line works
+        #self.labelLayout.setAlignment(self.indexLabel, Qt.AlignLeft)
+        self.labelLayout.setAlignment(self.positionLabel, Qt.AlignLeft)
+        self.labelLayout.setAlignment(self.deleteLabel, Qt.AlignCenter) 
+        
+        # Setting the Node Label Main Layout to the Node Label Main Struture
+        self.labelContainer.setLayout(self.labelLayout)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Element Input Area 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Element Input Area Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Element Input Area Main Struture
+        self.ElementInputScorllArea = QScrollArea() # Controls the Scroll Area for the Widget that contains all the inputs
+        self.ElementInputScorllArea.setWidgetResizable(True)
+        self.ElementInputScorllArea.setMinimumHeight(45)
+        self.ElementInputScorllArea.setStyleSheet("""border-color: rgba(0,0,0,0);
+                                                background-color: black;""")
+        
+        # The Node Input Area Main Sub-Struture
+        self.ElementInputScrollAreaWidget = QWidget() # Widget that will hold all inputs, will be the central widget for nodeInputScrollArea, will contain the nodeInputScrollAreaWidgetLayout
+        self.ElementInputScrollAreaWidget.setContentsMargins(0,0,0,0)
+        self.ElementInputScrollAreaWidget.setStyleSheet("""border: none;
+                                background-color: rgba(0,0,0,0);""")
+        
+        # The Node Input Area Main Sub-Layout
+        self.ElementInputScrollAreaWidgetLayout = QVBoxLayout() # Every addition input will be added here, Minor Widget will be added here, goes downwards, one Minor Widget Input, non formatting
+        self.ElementInputScrollAreaWidgetLayout.setSpacing(0)
+        self.ElementInputScrollAreaWidgetLayout.setContentsMargins(0,0,0,0) 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Element Input Area Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # region Minor Element Input 
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # region Minor Element Input Widget and Layout Creation
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # The Element Input Main Struture
+        self.ElementInputContainer = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
+
+        #The Elmenet Input Main Layout
+        self.ElementInputLayout = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
+        self.ElementInputLayout.setSpacing(0)
+        self.ElementInputLayout.setContentsMargins(0,0,0,3)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Element Input Content
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Tiny Widgets
+        self.indexNumberElement = QLabel("1")
+        self.indexNumberElement.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em; """)
+        
+        self.genericInput = QLineEdit()
+        self.genericInput.editingFinished.connect(lambda: self.onTextFinal(1)) #textChanged
+        self.genericInput.setAlignment(Qt.AlignCenter)
+        self.genericInput.setStyleSheet("background-color: white;")
+        
+        self.delete = QRadioButton()
+        self.delete.setDisabled(True)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Element Input addition and layout
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Adding Tiny to The Node Input Main Layout
+        self.ElementInputLayout.addWidget(self.indexNumberElement)
+        self.ElementInputLayout.addWidget(self.genericInput)
+        self.ElementInputLayout.addWidget(self.delete)
+        
+        self.ElementInputLayout.setAlignment(self.genericInput, Qt.AlignLeft)
+        self.ElementInputLayout.setAlignment(self.delete, Qt.AlignCenter) 
+        
+        # Setting the Node Input Main Layout to the Node Input Main Struture
+        self.ElementInputContainer.setLayout(self.ElementInputLayout)
+        
+        self.list_of_widgets = []
+        self.list_of_widgets.append(self.ElementInputContainer)
+        
+        self.list_of_widgets_previous_text = []
+        self.list_of_widgets_previous_text.append("0,0") # first always there 
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # endregion
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+    
+        # region Major Element Input Area Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Element Input Area Main Sub-Layout
+        self.ElementInputScrollAreaWidgetLayout.addWidget(self.ElementInputContainer)
+        
+        # Setting the Element Input Area Main Sub-Layout to the Element Input Area Main Sub-Struture
+        self.ElementInputScrollAreaWidget.setLayout(self.ElementInputScrollAreaWidgetLayout)
+
+        # Setting the Element Input Area Main Sub-Struture to the Element Input Area Main Struture
+        self.ElementInputScorllArea.setWidget(self.ElementInputScrollAreaWidget)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Add Element Button Sub-Sub-Section
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Add Element Button Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.buttonsLayout = QHBoxLayout()
+        self.buttonsLayout.setSpacing(0) 
+        self.buttonsLayout.setContentsMargins(0,0,0,0)
+        
+        self.buttonsContainer = QWidget()
+        self.buttonsContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+        
+        # None needed since it will be added to bottom and centered 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Element Button Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.addBackButton = QPushButton()
+        self.addBackButton.setText("Back")
+        self.addBackButton.setStyleSheet("""
+                                            min-width: 3em;
+                                            max-width: 3em;
+                                                """)
+        self.addBackButton.clicked.connect(lambda: self.onClickB())
+        
+        
+        self.addElementButton = QPushButton()
+        self.addElementButton.setText("Add Element")
+        self.addElementButton.setStyleSheet("""
+                                            min-width: 5.3em;
+                                            max-width: 5.3em;
+                                                """)
+        self.addElementButton.clicked.connect(lambda: self.onClick())
+        
+        self.addCalcuateButton = QPushButton()
+        self.addCalcuateButton.setText("Calcuate")
+        self.addCalcuateButton.setStyleSheet("""
+                                            min-width: 3.8em;
+                                            max-width: 3.8em;
+                                            
+                                            background-color: #734c91;
+                                            color: white;
+                                                """)
+        self.addCalcuateButton.clicked.connect(lambda: self.onClickC())
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Element Button addition and actualization
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.buttonsLayout.addWidget(self.addBackButton)
+        self.buttonsLayout.addWidget(self.addElementButton)
+        self.buttonsLayout.addWidget(self.addCalcuateButton)
+        
+        self.buttonsContainer.setLayout(self.buttonsLayout)
+        # none needed since already widget and so will be added directly to node response layout 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Element Response Content addition and Actualization
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # Adding Major to Element Response Main Layout
+        self.ElementResponseLayout.addWidget(self.labelContainer)
+        self.ElementResponseLayout.addWidget(self.ElementInputScorllArea) # chnge it back here
+        self.ElementResponseLayout.addWidget(self.buttonsContainer)
+        
+        
+        # Setting the Element Response Main Layout to the ELement Response Main Struture
+        self.ElementResponseContainer.setLayout(self.ElementResponseLayout) 
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion
+        #****************************************
+        # endregion 
+        #----------------------------------------
+        # endregion
+        
+        # region Main Element Section addition and layout
+        #----------------------------------------
+        # Adding Primary to Second Main Layout
+        self.ElementLayout.addWidget(self.noteContainer) # Added to Super Container Layout
+        self.ElementLayout.addWidget(self.ElementResponseContainer)
+
+        # Setting the Second Main Layout to the Second Main Struture 
+        self.ElementContainer.setLayout(self.ElementLayout) # This will be added to MainLayout
+        #----------------------------------------
+        # endregion
+        #========================================
+        # endregion 
+        
+        # region Main Engineering Supports Section
+        #========================================
+        # region Main Engineering Supports Section Widget and Layout Creation
+        #----------------------------------------
+        # The Second Main Struture
+        self.ESContainer = QGroupBox("Supports") # Contains all support related things, will contain the ESLayout
+        self.ESContainer.setFixedWidth(550) # Has same coloring as MainWindow Widget
+        
+        # The Second Main Layout
+        self.ESLayout = QVBoxLayout()  # Every Primary Widget will be added here, goes downwards, two Primaries Note and Response
+        self.ESLayout.setSpacing(4) # The space inbetween widgets in ESLayout
+        self.ESLayout.setContentsMargins(6,0,6,6) # The space inbetween the ends of the groupbox and the widgets inside
+        #----------------------------------------
+        # endregion
+        
+        # region Main Engineering Supports Section Content
+        #----------------------------------------
+        # region Primary Engineering Supports Note
+        #****************************************
+        self.createInfoLabel("Enter node as integer.") # Creates a widget called noteCotainer 
+        #****************************************
+        # endregion
+            
+        # region Primary Roller Response
+        #****************************************
+        # region Primary Roller Response Widget and Layout Creation
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # The Engineering Supports Response Main Struture
+        self.ESResponseContainer = QFrame() # Contains all the reponses and heading, will contain the ESResponseLayout
+
+        # The Engineering Supports Response Main Layout
+        self.ESResponseLayout = QVBoxLayout() # Every Major Widget will be added here, goes downwards, three Major Widgets Label, Input Area, and add button
+        self.ESResponseLayout.setSpacing(0)  
+        self.ESResponseLayout.setContentsMargins(0,0,0,6)
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Roller Supports Response Content
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # region Major Engineering Supports Label 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Engineering Supports Label Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Engineering Supports Label Main Struture
+        self.ESlabelContainer = QWidget() # Contains all the info labels, will contain the elementLabelLayout
+        self.ESlabelContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+    
+        # The Engineering Supports Label Main Layout
+        self.ESlabelLayout = QHBoxLayout() # Every Minor Widget will be added here, goes sideways, formatting
+        self.ESlabelLayout.setSpacing(0) 
+        self.ESlabelLayout.setContentsMargins(0,0,0,0)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering SupportsElement Label Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Minor Widgets
+        self.indexLabelES = QLabel("#")
+        self.indexLabelES.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em;
+                                    
+                                    background-color: rgba(0,0,0,0);""")
+        
+        self.nodeLabelES = QLabel("Roller")
+        self.nodeLabelES.setStyleSheet("""
+                                    min-width: 5em;
+                                    max-width: 5em;
+                            
+                                    background-color: rgba(0,0,0,0);
+        
+                                    qproperty-alignment: AlignLeft;""")        
+        
+        self.deleteLabelES = QLabel("Delete")
+        self.deleteLabelES.setStyleSheet("""
+                                    min-width: 2.35em;
+                                    max-width: 2.35em;
+                                
+                                    background-color: rgba(0,0,0,0);""")
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering Supports Label Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Node Label Main Layout
+        self.ESlabelLayout.addWidget(self.indexLabelES)
+        self.ESlabelLayout.addWidget(self.nodeLabelES)
+        self.ESlabelLayout.addWidget(self.deleteLabelES)
+        
+        #self.labelLayout.setAlignment(self.indexLabel, Qt.AlignLeft)
+        self.ESlabelLayout.setAlignment(self.nodeLabelES, Qt.AlignLeft)
+        self.ESlabelLayout.setAlignment(self.deleteLabelES, Qt.AlignCenter) 
+        
+        # Setting the Node Label Main Layout to the Node Label Main Struture
+        self.ESlabelContainer.setLayout(self.ESlabelLayout)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Engineering Supports Input Area 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Engineering Supports Input Area Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Engineering Supports Input Area Main Struture
+        self.ESInputScorllArea = QScrollArea() # Controls the Scroll Area for the Widget that contains all the inputs
+        self.ESInputScorllArea.setWidgetResizable(True)
+        self.ESInputScorllArea.setMinimumHeight(45)
+        self.ESInputScorllArea.setStyleSheet("""border-color: rgba(0,0,0,0);
+                                                background-color: black;""")
+        
+        # The Engineering Supports Input Area Main Sub-Struture
+        self.ESInputScrollAreaWidget = QWidget() # Widget that will hold all inputs, will be the central widget for nodeInputScrollArea, will contain the nodeInputScrollAreaWidgetLayout
+        self.ESInputScrollAreaWidget.setContentsMargins(0,0,0,0)
+        self.ESInputScrollAreaWidget.setStyleSheet("""border: none;
+                                background-color: rgba(0,0,0,0);""")
+        
+        # The Engineering Supports Input Area Main Sub-Layout
+        self.ESInputScrollAreaWidgetLayout = QVBoxLayout() # Every addition input will be added here, Minor Widget will be added here, goes downwards, one Minor Widget Input, non formatting
+        self.ESInputScrollAreaWidgetLayout.setSpacing(0)
+        self.ESInputScrollAreaWidgetLayout.setContentsMargins(0,0,0,0) 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering Supports Input Area Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # region Minor Engineering Supports Input 
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # region Minor Engineering Supports Input Widget and Layout Creation
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # The Engineering Supports Input Main Struture
+        self.ESInputContainer = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
+
+        #The Engineering Supports Input Main Layout
+        self.ESInputLayout = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
+        self.ESInputLayout.setSpacing(0)
+        self.ESInputLayout.setContentsMargins(0,0,0,3)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input Content
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Tiny Widgets
+        self.indexNumberES = QLabel("1")
+        self.indexNumberES.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em; """)
+        
+        self.genericInputES = QLineEdit()
+        self.genericInputES.editingFinished.connect(lambda: self.onTextFinalR(1)) #textChanged
+        self.genericInputES.setAlignment(Qt.AlignCenter)
+        self.genericInputES.setStyleSheet("background-color: white;")
+        
+        self.deleteES = QRadioButton()
+        self.deleteES.setDisabled(True)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input addition and layout
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Adding Tiny to The Node Input Main Layout
+        self.ESInputLayout.addWidget(self.indexNumberES)
+        self.ESInputLayout.addWidget(self.genericInputES)
+        self.ESInputLayout.addWidget(self.deleteES)
+        
+        self.ESInputLayout.setAlignment(self.genericInputES, Qt.AlignLeft)
+        self.ESInputLayout.setAlignment(self.deleteES, Qt.AlignCenter) 
+        
+        # Setting the Engineering Supports Input Main Layout to the Engineering Supports Input Main Struture
+        self.ESInputContainer.setLayout(self.ESInputLayout)
+        
+        # list of widgets for roller
+        self.list_of_widgetsR = []
+        self.list_of_widgetsR.append(self.ESInputContainer)
+        
+        self.list_of_widgets_previous_textR = []
+        self.list_of_widgets_previous_textR.append("0,0") # first always there 
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # endregion
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+    
+        # region Major Engineering Supports Input Area Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Engineering Supports Input Area Main Sub-Layout
+        self.ESInputScrollAreaWidgetLayout.addWidget(self.ESInputContainer)
+        
+        # Setting the Engineering Supports Input Area Main Sub-Layout to the Engineering Supports Input Area Main Sub-Struture
+        self.ESInputScrollAreaWidget.setLayout(self.ESInputScrollAreaWidgetLayout)
+
+        # Setting the Engineering Supports Input Area Main Sub-Struture to the Engineering Supports Input Area Main Struture
+        self.ESInputScorllArea.setWidget(self.ESInputScrollAreaWidget)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Add Engineering Supports Button Sub-Sub-Section
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Add Element Button Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.ESbuttonsLayout = QHBoxLayout()
+        self.ESbuttonsLayout.setSpacing(0) 
+        self.ESbuttonsLayout.setContentsMargins(0,0,0,0)
+        
+        self.ESbuttonsContainer = QWidget()
+        self.ESbuttonsContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+        
+        # None needed since it will be added to bottom and centered 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Element Button Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^          
+        self.addElementButtonES = QPushButton()
+        self.addElementButtonES.setText("Add Roller")
+        self.addElementButtonES.setStyleSheet("""
+                                            min-width: 5.3em;
+                                            max-width: 5.3em;
+                                                """)
+        self.addElementButtonES.clicked.connect(lambda: self.onClickR())
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Engineering Supports Button addition and actualization
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #self.ESbuttonsLayout.addWidget(self.addElementButtonES)
+        
+        #self.ESbuttonsContainer.setLayout(self.ESbuttonsLayout)
+        # none needed since already widget and so will be added directly to node response layout 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Roller Supports Response Content addition and Actualization
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # Adding Major to Engineering Supports Response Main Layout
+        self.ESResponseLayout.addWidget(self.ESlabelContainer)
+        self.ESResponseLayout.addWidget(self.ESInputScorllArea) # chnge it back here
+        self.ESResponseLayout.addWidget(self.addElementButtonES)
+        
+        self.ESResponseLayout.setAlignment(self.addElementButtonES, Qt.AlignCenter)
+
+        # Setting the Engineering Supports Response Main Layout to the Engineering Supports Response Main Struture
+        self.ESResponseContainer.setLayout(self.ESResponseLayout) 
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion
+        #****************************************
+        # endregion 
+        
+        # region Primary Pin Response
+        #****************************************
+        # region Primary Pin Response Widget and Layout Creation
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # The Engineering Supports Response Main Struture
+        self.ESPResponseContainer = QFrame() # Contains all the reponses and heading, will contain the ESResponseLayout
+
+        # The Engineering Supports Response Main Layout
+        self.ESPResponseLayout = QVBoxLayout() # Every Major Widget will be added here, goes downwards, three Major Widgets Label, Input Area, and add button
+        self.ESPResponseLayout.setSpacing(0)  
+        self.ESPResponseLayout.setContentsMargins(0,0,0,6)
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Pin Supports Response Content
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # region Major Engineering Supports Label 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Engineering Supports Label Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Engineering Supports Label Main Struture
+        self.ESPlabelContainer = QWidget() # Contains all the info labels, will contain the elementLabelLayout
+        self.ESPlabelContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+    
+        # The Engineering Supports Label Main Layout
+        self.ESPlabelLayout = QHBoxLayout() # Every Minor Widget will be added here, goes sideways, formatting
+        self.ESPlabelLayout.setSpacing(0) 
+        self.ESPlabelLayout.setContentsMargins(0,0,0,0)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering SupportsElement Label Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Minor Widgets
+        self.indexLabelESP = QLabel("#")
+        self.indexLabelESP.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em;
+                                    
+                                    background-color: rgba(0,0,0,0);""")
+        
+        self.nodeLabelESP = QLabel("Pin")
+        self.nodeLabelESP.setStyleSheet("""
+                                    min-width: 5em;
+                                    max-width: 5em;
+                            
+                                    background-color: rgba(0,0,0,0);
+        
+                                    qproperty-alignment: AlignLeft;""")        
+        
+        self.deleteLabelESP = QLabel("Delete")
+        self.deleteLabelESP.setStyleSheet("""
+                                    min-width: 2.35em;
+                                    max-width: 2.35em;
+                                
+                                    background-color: rgba(0,0,0,0);""")
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering Supports Label Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Node Label Main Layout
+        self.ESPlabelLayout.addWidget(self.indexLabelESP)
+        self.ESPlabelLayout.addWidget(self.nodeLabelESP)
+        self.ESPlabelLayout.addWidget(self.deleteLabelESP)
+        
+        #self.labelLayout.setAlignment(self.indexLabel, Qt.AlignLeft)
+        self.ESPlabelLayout.setAlignment(self.nodeLabelESP, Qt.AlignLeft)
+        self.ESPlabelLayout.setAlignment(self.deleteLabelESP, Qt.AlignCenter) 
+        
+        # Setting the Node Label Main Layout to the Node Label Main Struture
+        self.ESPlabelContainer.setLayout(self.ESPlabelLayout)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Engineering Supports Input Area 
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Engineering Supports Input Area Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # The Engineering Supports Input Area Main Struture
+        self.ESPInputScorllArea = QScrollArea() # Controls the Scroll Area for the Widget that contains all the inputs
+        self.ESPInputScorllArea.setWidgetResizable(True)
+        self.ESPInputScorllArea.setMinimumHeight(45)
+        self.ESPInputScorllArea.setStyleSheet("""border-color: rgba(0,0,0,0);
+                                                background-color: black;""")
+        
+        # The Engineering Supports Input Area Main Sub-Struture
+        self.ESPInputScrollAreaWidget = QWidget() # Widget that will hold all inputs, will be the central widget for nodeInputScrollArea, will contain the nodeInputScrollAreaWidgetLayout
+        self.ESPInputScrollAreaWidget.setContentsMargins(0,0,0,0)
+        self.ESPInputScrollAreaWidget.setStyleSheet("""border: none;
+                                background-color: rgba(0,0,0,0);""")
+        
+        # The Engineering Supports Input Area Main Sub-Layout
+        self.ESPInputScrollAreaWidgetLayout = QVBoxLayout() # Every addition input will be added here, Minor Widget will be added here, goes downwards, one Minor Widget Input, non formatting
+        self.ESPInputScrollAreaWidgetLayout.setSpacing(0)
+        self.ESPInputScrollAreaWidgetLayout.setContentsMargins(0,0,0,0) 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Engineering Supports Input Area Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # region Minor Engineering Supports Input 
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # region Minor Engineering Supports Input Widget and Layout Creation
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # The Engineering Supports Input Main Struture
+        self.ESPInputContainer = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
+
+        #The Engineering Supports Input Main Layout
+        self.ESPInputLayout = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
+        self.ESPInputLayout.setSpacing(0)
+        self.ESPInputLayout.setContentsMargins(0,0,0,3)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input Content
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Tiny Widgets
+        self.indexNumberESP = QLabel("1")
+        self.indexNumberESP.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em; """)
+        
+        self.genericInputESP = QLineEdit()
+        self.genericInputESP.editingFinished.connect(lambda: self.onTextFinalRP(1)) #textChanged
+        self.genericInputESP.setAlignment(Qt.AlignCenter)
+        self.genericInputESP.setStyleSheet("background-color: white;")
+        
+        self.deleteESP = QRadioButton()
+        self.deleteESP.setDisabled(True)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input addition and layout
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Adding Tiny to The Node Input Main Layout
+        self.ESPInputLayout.addWidget(self.indexNumberESP)
+        self.ESPInputLayout.addWidget(self.genericInputESP)
+        self.ESPInputLayout.addWidget(self.deleteESP)
+        
+        self.ESPInputLayout.setAlignment(self.genericInputESP, Qt.AlignLeft)
+        self.ESPInputLayout.setAlignment(self.deleteESP, Qt.AlignCenter) 
+        
+        # Setting the Engineering Supports Input Main Layout to the Engineering Supports Input Main Struture
+        self.ESPInputContainer.setLayout(self.ESPInputLayout)
+        
+        # list of widgets for roller
+        self.list_of_widgetsRP = []
+        self.list_of_widgetsRP.append(self.ESPInputContainer)
+        
+        self.list_of_widgets_previous_textRP = []
+        self.list_of_widgets_previous_textRP.append("0,0") # first always there 
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        # endregion
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+    
+        # region Major Engineering Supports Input Area Content addition and layout
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # Adding Minor to Engineering Supports Input Area Main Sub-Layout
+        self.ESPInputScrollAreaWidgetLayout.addWidget(self.ESPInputContainer)
+        
+        # Setting the Engineering Supports Input Area Main Sub-Layout to the Engineering Supports Input Area Main Sub-Struture
+        self.ESPInputScrollAreaWidget.setLayout(self.ESPInputScrollAreaWidgetLayout)
+
+        # Setting the Engineering Supports Input Area Main Sub-Struture to the Engineering Supports Input Area Main Struture
+        self.ESPInputScorllArea.setWidget(self.ESPInputScrollAreaWidget)
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        
+        # region Major Add Engineering Supports Button Sub-Sub-Section
+        #++++++++++++++++++++++++++++++++++++++++
+        # region Major Add Element Button Widget and Layout Creation
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.ESPbuttonsLayout = QHBoxLayout()
+        self.ESPbuttonsLayout.setSpacing(0) 
+        self.ESPbuttonsLayout.setContentsMargins(0,0,0,0)
+        
+        self.ESPbuttonsContainer = QWidget()
+        self.ESPbuttonsContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
+        
+        # None needed since it will be added to bottom and centered 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Element Button Content
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^          
+        self.addElementButtonESP = QPushButton()
+        self.addElementButtonESP.setText("Add Pin")
+        self.addElementButtonESP.setStyleSheet("""
+                                            min-width: 5.3em;
+                                            max-width: 5.3em;
+                                                """)
+        self.addElementButtonESP.clicked.connect(lambda: self.onClickRP())
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        
+        # region Major Add Engineering Supports Button addition and actualization
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        #self.ESbuttonsLayout.addWidget(self.addElementButtonES)
+        
+        #self.ESbuttonsContainer.setLayout(self.ESbuttonsLayout)
+        # none needed since already widget and so will be added directly to node response layout 
+        #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        # endregion
+        #++++++++++++++++++++++++++++++++++++++++
+        # endregion
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion 
+        
+        # region Primary Pin Supports Response Content addition and Actualization
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # Adding Major to Engineering Supports Response Main Layout
+        self.ESPResponseLayout.addWidget(self.ESPlabelContainer)
+        self.ESPResponseLayout.addWidget(self.ESPInputScorllArea) # chnge it back here
+        self.ESPResponseLayout.addWidget(self.addElementButtonESP)
+        
+        self.ESPResponseLayout.setAlignment(self.addElementButtonESP, Qt.AlignCenter)
+
+        # Setting the Engineering Supports Response Main Layout to the Engineering Supports Response Main Struture
+        self.ESPResponseContainer.setLayout(self.ESPResponseLayout) 
+        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+        # endregion
+        #****************************************
+        # endregion
+        #----------------------------------------
+        # endregion
+        
+        # region Main Engineering Supports Section addition and layout
+        #----------------------------------------
+        # Adding Primary to Second Main Layout
+        self.ESLayout.addWidget(self.noteContainer) # Added to Super Container Layout
+        self.ESLayout.addWidget(self.ESResponseContainer)
+        self.ESLayout.addWidget(self.ESPResponseContainer)
+
+        # Setting the Second Main Layout to the Second Main Struture 
+        self.ESContainer.setLayout(self.ESLayout) # This will be added to MainLayout
+        #----------------------------------------
+        # endregion
+        #========================================
+        # endregion
+        #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        # endregion
+        
+        # region Window addition, layout, and Actualization
+        #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        self.mainLayout.addWidget(self.ElementContainer) # First Column
+        self.mainLayout.addWidget(self.ESContainer)
+
+        self.canvas.setLayout(self.mainLayout) 
+        
+        self.setCentralWidget(self.canvas)
+        #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        # endregion
+    
+    def createInfoLabel(self, message):
+        # region Info Label Widget and Layout Creation
+        #(((((((((((((((((((())))))))))))))))))))
+        self.noteContainer = QFrame() # To get outline of note
+        self.noteContainer.setFixedHeight(100) # On frame min and max
+        self.noteLayout = QVBoxLayout() # Add things up to down
+        self.noteLayout.setSpacing(0)
+        #(((((((((((((((((((())))))))))))))))))))
+        # endregion
+        
+        # region Info Label Content
+        #(((((((((((((((((((())))))))))))))))))))
+        self.note = QLabel("Note:") # look at master style sheet
+        self.note.setStyleSheet("qproperty-alignment: AlignLeft;")
+        
+        self.genericInfo = QLabel(message) # look at master style sheet
+        # by default Q label text is centered in master style sheet
+        #(((((((((((((((((((())))))))))))))))))))
+        # endregion
+        
+        # region Info Label addition and layout
+        #(((((((((((((((((((())))))))))))))))))))
+        self.noteLayout.addWidget(self.note)
+        self.noteLayout.addWidget(self.genericInfo)
+        
+        self.noteContainer.setLayout(self.noteLayout) # returns this, to be added to layout
+        #(((((((((((((((((((())))))))))))))))))))
+        # endregion
+
+    def onClick(self):    
+        self.createMinorElementResponse(len(self.list_of_widgets) + 1) # before element gets added         
+        self.repaint()
+        
+    def onClickB(self):
+        print("going back")
+        
+    def onClickC(self):
+        self.Graphics.solve_matrix()
+        
+    def onClickR(self):
+        self.createMinorRollerResponse(len(self.list_of_widgetsR) + 1) # before element gets added         
+        self.repaint()
+        
+    def onClickRP(self):
+        self.createMinorPinResponse(len(self.list_of_widgetsRP) + 1)
+        self.repaint()
+        
+    def createMinorElementResponse(self, number):
+            # region Minor Element Response Widget and Layout Creation
+            #(((((((((((((((((((())))))))))))))))))))
+            self.genericRowWidget = QWidget()
+            self.genericRowWidget.setMinimumHeight(45)
+            self.genericHorizationalLayout = QHBoxLayout()
+            self.genericHorizationalLayout.setSpacing(0)
+            self.genericHorizationalLayout.setContentsMargins(0,0,0,0)
+            #(((((((((((((((((((())))))))))))))))))))
             # endregion
             
-            # region Major Element Label Content
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # Minor Widgets
-            self.indexLabelElement = QLabel("#")
-            self.indexLabelElement.setStyleSheet("""
+            # region Minor Element Response Content
+            #(((((((((((((((((((())))))))))))))))))))
+            self.indexNumber_1 = QLabel(f"{number}")
+            self.indexNumber_1.setStyleSheet("""
                                         min-width: 2em;
                                         max-width: 2em;
-                                        
-                                        background-color: rgba(0,0,0,0);""")
+                                        """)
             
-            self.positionLabel = QLabel("Element")
-            self.positionLabel.setStyleSheet("""
-                                        min-width: 5em;
-                                        max-width: 5em;
-                                
-                                        background-color: rgba(0,0,0,0);
+            self.genericInput_1 = QLineEdit()
+            self.genericInput_1.setAlignment(Qt.AlignCenter)
+            self.genericInput_1.setStyleSheet("background-color: white;")
             
-                                        qproperty-alignment: AlignLeft;""")        
-            
-            self.deleteLabel = QLabel("Delete")
-            self.deleteLabel.setStyleSheet("""
-                                        min-width: 2.35em;
-                                        max-width: 2.35em;
-                                    
-                                        background-color: rgba(0,0,0,0);""")
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            self.delete_1 = QRadioButton()
+            #(((((((((((((((((((())))))))))))))))))))
             # endregion
             
-            # region Major Element Label Content addition and layout
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # Adding Minor to Node Label Main Layout
-            self.labelLayout.addWidget(self.indexLabelElement)
-            self.labelLayout.addWidget(self.positionLabel)
-            self.labelLayout.addWidget(self.deleteLabel)
+            # region Minor Element Response addition and layout
+            #(((((((((((((((((((())))))))))))))))))))
+            self.genericHorizationalLayout.addWidget(self.indexNumber_1)
+            self.genericHorizationalLayout.addWidget(self.genericInput_1)
+            self.genericHorizationalLayout.addWidget(self.delete_1)
             
-            # Note: I have no idea why this line works
-            #self.labelLayout.setAlignment(self.indexLabel, Qt.AlignLeft)
-            self.labelLayout.setAlignment(self.positionLabel, Qt.AlignLeft)
-            self.labelLayout.setAlignment(self.deleteLabel, Qt.AlignCenter) 
+            self.genericHorizationalLayout.setAlignment(self.genericInput_1, Qt.AlignLeft)
+            self.genericHorizationalLayout.setAlignment(self.delete_1, Qt.AlignCenter)
             
-            # Setting the Node Label Main Layout to the Node Label Main Struture
-            self.labelContainer.setLayout(self.labelLayout)
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            self.genericRowWidget.setLayout(self.genericHorizationalLayout)
+            
+            # important here for numbers
+            self.list_of_widgets.append(self.genericRowWidget) # now added to list so official counted
+            self.list_of_widgets_previous_text.append("0,0") #store preivous good text
+            
+            self.genericInput_1.editingFinished.connect(lambda: self.onTextFinal(number)) #textChanged
+            
+            self.ElementInputScrollAreaWidgetLayout.addWidget(self.genericRowWidget)
+            #(((((((((((((((((((())))))))))))))))))))
             # endregion
-            #++++++++++++++++++++++++++++++++++++++++
-            # endregion
-            
-            # region Major Element Input Area 
-            #++++++++++++++++++++++++++++++++++++++++
-            # region Major Element Input Area Widget and Layout Creation
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # The Element Input Area Main Struture
-            self.ElementInputScorllArea = QScrollArea() # Controls the Scroll Area for the Widget that contains all the inputs
-            self.ElementInputScorllArea.setWidgetResizable(True)
-            self.ElementInputScorllArea.setMinimumHeight(45)
-            self.ElementInputScorllArea.setStyleSheet("""border-color: rgba(0,0,0,0);
-                                                    background-color: black;""")
-            
-            # The Node Input Area Main Sub-Struture
-            self.ElementInputScrollAreaWidget = QWidget() # Widget that will hold all inputs, will be the central widget for nodeInputScrollArea, will contain the nodeInputScrollAreaWidgetLayout
-            self.ElementInputScrollAreaWidget.setContentsMargins(0,0,0,0)
-            self.ElementInputScrollAreaWidget.setStyleSheet("""border: none;
-                                    background-color: rgba(0,0,0,0);""")
-            
-            # The Node Input Area Main Sub-Layout
-            self.ElementInputScrollAreaWidgetLayout = QVBoxLayout() # Every addition input will be added here, Minor Widget will be added here, goes downwards, one Minor Widget Input, non formatting
-            self.ElementInputScrollAreaWidgetLayout.setSpacing(0)
-            self.ElementInputScrollAreaWidgetLayout.setContentsMargins(0,0,0,0) 
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # endregion
-            
-            # region Major Element Input Area Content
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # region Minor Element Input 
-            #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            # region Minor Element Input Widget and Layout Creation
+    
+    def createMinorRollerResponse(self, number):
+            # region Minor Engineering Supports Input Widget and Layout Creation
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            # The Element Input Main Struture
-            self.ElementInputContainer = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
-   
-            #The Elmenet Input Main Layout
-            self.ElementInputLayout = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
-            self.ElementInputLayout.setSpacing(0)
-            self.ElementInputLayout.setContentsMargins(0,0,0,3)
+            # The Engineering Supports Input Main Struture
+            self.ESInputContainerG = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
+
+            #The Engineering Supports Input Main Layout
+            self.ESInputLayoutG = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
+            self.ESInputLayoutG.setSpacing(0)
+            self.ESInputLayoutG.setContentsMargins(0,0,0,3)
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # endregion
             
-            # region Minor Element Input Content
+            # region Minor Engineering Supports Supports Input Content
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # Tiny Widgets
-            self.indexNumberElement = QLabel("1")
-            self.indexNumberElement.setStyleSheet("""
+            self.indexNumberESG = QLabel(f'{number}')
+            self.indexNumberESG.setStyleSheet("""
                                         min-width: 2em;
                                         max-width: 2em; """)
             
-            self.genericInput = QLineEdit()
-            self.genericInput.editingFinished.connect(lambda: self.onTextFinal(1)) #textChanged
-            self.genericInput.setAlignment(Qt.AlignCenter)
-            self.genericInput.setStyleSheet("background-color: white;")
+            self.genericInputESG = QLineEdit()
+            self.genericInputESG.setAlignment(Qt.AlignCenter)
+            self.genericInputESG.setStyleSheet("background-color: white;")
             
-            self.delete = QRadioButton()
-            self.delete.setDisabled(True)
+            self.deleteESG = QRadioButton()
+            self.deleteESG.setDisabled(True)
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # endregion
             
-            # region Minor Element Input addition and layout
+            # region Minor Engineering Supports Supports Input addition and layout
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # Adding Tiny to The Node Input Main Layout
-            self.ElementInputLayout.addWidget(self.indexNumberElement)
-            self.ElementInputLayout.addWidget(self.genericInput)
-            self.ElementInputLayout.addWidget(self.delete)
+            self.ESInputLayoutG.addWidget(self.indexNumberESG)
+            self.ESInputLayoutG.addWidget(self.genericInputESG)
+            self.ESInputLayoutG.addWidget(self.deleteESG)
             
-            self.ElementInputLayout.setAlignment(self.genericInput, Qt.AlignCenter)
-            self.ElementInputLayout.setAlignment(self.delete, Qt.AlignCenter) 
+            self.ESInputLayoutG.setAlignment(self.genericInputESG, Qt.AlignLeft)
+            self.ESInputLayoutG.setAlignment(self.deleteESG, Qt.AlignCenter) 
             
-            # Setting the Node Input Main Layout to the Node Input Main Struture
-            self.ElementInputContainer.setLayout(self.ElementInputLayout)
+            # Setting the Engineering Supports Input Main Layout to the Engineering Supports Input Main Struture
+            self.ESInputContainerG.setLayout(self.ESInputLayoutG)
             
-            self.list_of_widgets = []
-            self.list_of_widgets.append(self.ElementInputContainer)
+            # list of widgets for roller
+            self.list_of_widgetsR.append(self.ESInputContainerG)
+            self.list_of_widgets_previous_textR.append("0,0") #store preivous good text
             
-            self.list_of_widgets_previous_text = []
-            self.list_of_widgets_previous_text.append("0,0") # first always there 
+            self.genericInputESG.editingFinished.connect(lambda: self.onTextFinalR(number)) #textChanged
+            
+            self.ESInputScrollAreaWidgetLayout.addWidget(self.ESInputContainerG)
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # endregion
-            #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            # endregion
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # endregion
+
+    def createMinorPinResponse(self, number):
+        # region Minor Engineering Supports Input Widget and Layout Creation
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # The Engineering Supports Input Main Struture
+        self.ESPInputContainerG = QWidget() # Contains input, will contain the nodeInputLayout, add to nodeInputScrollAreaWidgetLayout once done
+
+        #The Engineering Supports Input Main Layout
+        self.ESPInputLayoutG = QHBoxLayout() # Every Tiny Widget will be added here, goes sideways, formatting
+        self.ESPInputLayoutG.setSpacing(0)
+        self.ESPInputLayoutG.setContentsMargins(0,0,0,3)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
         
-            # region Major Element Input Area Content addition and layout
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # Adding Minor to Element Input Area Main Sub-Layout
-            self.ElementInputScrollAreaWidgetLayout.addWidget(self.ElementInputContainer)
-            
-            # Setting the Element Input Area Main Sub-Layout to the Element Input Area Main Sub-Struture
-            self.ElementInputScrollAreaWidget.setLayout(self.ElementInputScrollAreaWidgetLayout)
-
-            # Setting the Element Input Area Main Sub-Struture to the Element Input Area Main Struture
-            self.ElementInputScorllArea.setWidget(self.ElementInputScrollAreaWidget)
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # endregion
-            #++++++++++++++++++++++++++++++++++++++++
-            # endregion
-            
-            # region Major Add Element Button Sub-Sub-Section
-            #++++++++++++++++++++++++++++++++++++++++
-            # region Major Add Element Button Widget and Layout Creation
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            self.buttonsLayout = QHBoxLayout()
-            self.buttonsLayout.setSpacing(0) 
-            self.buttonsLayout.setContentsMargins(0,0,0,0)
-            
-            self.buttonsContainer = QWidget()
-            self.buttonsContainer.setStyleSheet("background-color: rgba(0,0,0,0);")
-            
-            # None needed since it will be added to bottom and centered 
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # endregion
-            
-            # region Major Add Element Button Content
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            self.addBackButton = QPushButton()
-            self.addBackButton.setText("Back")
-            self.addBackButton.setStyleSheet("""
-                                                min-width: 3em;
-                                                max-width: 3em;
-                                                 """)
-            self.addBackButton.clicked.connect(lambda: self.onClickB())
-           
-            
-            self.addElementButton = QPushButton()
-            self.addElementButton.setText("Add Element")
-            self.addElementButton.setStyleSheet("""
-                                                min-width: 5.3em;
-                                                max-width: 5.3em;
-                                                 """)
-            self.addElementButton.clicked.connect(lambda: self.onClick())
-            
-            self.addCalcuateButton = QPushButton()
-            self.addCalcuateButton.setText("Calcuate")
-            self.addCalcuateButton.setStyleSheet("""
-                                                min-width: 3.8em;
-                                                max-width: 3.8em;
-                                                
-                                                background-color: #734c91;
-                                                color: white;
-                                                 """)
-            self.addCalcuateButton.clicked.connect(lambda: self.onClickC())
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # endregion
-            
-            # region Major Add Element Button addition and actualization
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            self.buttonsLayout.addWidget(self.addBackButton)
-            self.buttonsLayout.addWidget(self.addElementButton)
-            self.buttonsLayout.addWidget(self.addCalcuateButton)
-            
-            self.buttonsContainer.setLayout(self.buttonsLayout)
-            # none needed since already widget and so will be added directly to node response layout 
-            #^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            # endregion
-            #++++++++++++++++++++++++++++++++++++++++
-            # endregion
-            #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            # endregion 
-            
-            # region Primary Element Response Content addition and Actualization
-            #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            # Adding Major to Element Response Main Layout
-            self.ElementResponseLayout.addWidget(self.labelContainer)
-            self.ElementResponseLayout.addWidget(self.ElementInputScorllArea) # chnge it back here
-            self.ElementResponseLayout.addWidget(self.buttonsContainer)
-            
-            
-            # Setting the Element Response Main Layout to the ELement Response Main Struture
-            self.ElementResponseContainer.setLayout(self.ElementResponseLayout) 
-            #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-            # endregion
-            #****************************************
-            # endregion 
-            #----------------------------------------
-            # endregion
-            
-            # region Main Element Section addition and layout
-            #----------------------------------------
-            # Adding Primary to Second Main Layout
-            self.ElementLayout.addWidget(self.noteContainer) # Added to Super Container Layout
-            self.ElementLayout.addWidget(self.ElementResponseContainer)
-
-            # Setting the Second Main Layout to the Second Main Struture 
-            self.ElementContainer.setLayout(self.ElementLayout) # This will be added to MainLayout
-            #----------------------------------------
-            # endregion
-            #========================================
-            # endregion 
-            #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            # endregion
-            
-            # region Window addition, layout, and Actualization
-            #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            self.mainLayout.addWidget(self.ElementContainer) # First Column
-
-            self.canvas.setLayout(self.mainLayout) 
-            
-            self.setCentralWidget(self.canvas)
-            #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-            # endregion
+        # region Minor Engineering Supports Supports Input Content
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Tiny Widgets
+        self.indexNumberESGP = QLabel(f'{number}')
+        self.indexNumberESGP.setStyleSheet("""
+                                    min-width: 2em;
+                                    max-width: 2em; """)
         
-        def createInfoLabel(self, message):
-            # region Info Label Widget and Layout Creation
-            #(((((((((((((((((((())))))))))))))))))))
-            self.noteContainer = QFrame() # To get outline of note
-            self.noteContainer.setFixedHeight(100) # On frame min and max
-            self.noteLayout = QVBoxLayout() # Add things up to down
-            self.noteLayout.setSpacing(0)
-            #(((((((((((((((((((())))))))))))))))))))
-            # endregion
-            
-            # region Info Label Content
-            #(((((((((((((((((((())))))))))))))))))))
-            self.note = QLabel("Note:") # look at master style sheet
-            self.note.setStyleSheet("qproperty-alignment: AlignLeft;")
-            
-            self.genericInfo = QLabel(message) # look at master style sheet
-            # by default Q label text is centered in master style sheet
-            #(((((((((((((((((((())))))))))))))))))))
-            # endregion
-            
-            # region Info Label addition and layout
-            #(((((((((((((((((((())))))))))))))))))))
-            self.noteLayout.addWidget(self.note)
-            self.noteLayout.addWidget(self.genericInfo)
-            
-            self.noteContainer.setLayout(self.noteLayout) # returns this, to be added to layout
-            #(((((((((((((((((((())))))))))))))))))))
-            # endregion
+        self.genericInputESGP = QLineEdit()
+        self.genericInputESGP.setAlignment(Qt.AlignCenter)
+        self.genericInputESGP.setStyleSheet("background-color: white;")
+        
+        self.deleteESGP = QRadioButton()
+        self.deleteESGP.setDisabled(True)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+        
+        # region Minor Engineering Supports Supports Input addition and layout
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # Adding Tiny to The Node Input Main Layout
+        self.ESPInputLayoutG.addWidget(self.indexNumberESGP)
+        self.ESPInputLayoutG.addWidget(self.genericInputESGP)
+        self.ESPInputLayoutG.addWidget(self.deleteESGP)
+        
+        self.ESPInputLayoutG.setAlignment(self.genericInputESGP, Qt.AlignLeft)
+        self.ESPInputLayoutG.setAlignment(self.deleteESGP, Qt.AlignCenter) 
+        
+        # Setting the Engineering Supports Input Main Layout to the Engineering Supports Input Main Struture
+        self.ESPInputContainerG.setLayout(self.ESPInputLayoutG)
+        
+        # list of widgets for roller
+        self.list_of_widgetsRP.append(self.ESPInputContainerG)
+        self.list_of_widgets_previous_textRP.append("0,0") #store preivous good text
+        
+        self.genericInputESGP.editingFinished.connect(lambda: self.onTextFinalRP(number)) #textChanged
+        
+        self.ESPInputScrollAreaWidgetLayout.addWidget(self.ESPInputContainerG)
+        #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        # endregion
+
+    def onTextFinal(self,number):
+        print(f"Number of elements are {len(self.list_of_widgets)}.")
+        yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
+        hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
+        
+        print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
+        
+        print("Element creation started-") # the process really starts from here
+        print("------------")
+        self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
     
-        def onClick(self):    
-            self.createMinorElementResponse(len(self.list_of_widgets) + 1) # before element gets added         
-            self.repaint()
-            
-        def onClickB(self):
-            print("going back")
-            
-        def onClickC(self):
-            print("Yahhh")
-            
-        def createMinorElementResponse(self, number):
-                # region Minor Element Response Widget and Layout Creation
-                #(((((((((((((((((((())))))))))))))))))))
-                self.genericRowWidget = QWidget()
-                self.genericRowWidget.setMinimumHeight(45)
-                self.genericHorizationalLayout = QHBoxLayout()
-                self.genericHorizationalLayout.setSpacing(0)
-                self.genericHorizationalLayout.setContentsMargins(0,0,0,0)
-                #(((((((((((((((((((())))))))))))))))))))
-                # endregion
-                
-                # region Minor Element Response Content
-                #(((((((((((((((((((())))))))))))))))))))
-                self.indexNumber_1 = QLabel(f"{number}")
-                self.indexNumber_1.setStyleSheet("""
-                                            min-width: 2em;
-                                            max-width: 2em;
-                                            """)
-                
-                self.genericInput_1 = QLineEdit()
-                self.genericInput_1.setAlignment(Qt.AlignCenter)
-                self.genericInput_1.setStyleSheet("background-color: white;")
-                
-                self.delete_1 = QRadioButton()
-                #(((((((((((((((((((())))))))))))))))))))
-                # endregion
-                
-                # region Minor Element Response addition and layout
-                #(((((((((((((((((((())))))))))))))))))))
-                self.genericHorizationalLayout.addWidget(self.indexNumber_1)
-                self.genericHorizationalLayout.addWidget(self.genericInput_1)
-                self.genericHorizationalLayout.addWidget(self.delete_1)
-                
-                self.genericHorizationalLayout.setAlignment(self.genericInput_1, Qt.AlignCenter)
-                self.genericHorizationalLayout.setAlignment(self.delete_1, Qt.AlignCenter)
-                
-                self.genericRowWidget.setLayout(self.genericHorizationalLayout)
-                
-                # important here for numbers
-                self.list_of_widgets.append(self.genericRowWidget) # now added to list so official counted
-                self.list_of_widgets_previous_text.append("0,0") #store preivous good text
-                
-                self.genericInput_1.editingFinished.connect(lambda: self.onTextFinal(number)) #textChanged
-                
-                self.ElementInputScrollAreaWidgetLayout.addWidget(self.genericRowWidget)
-                #(((((((((((((((((((())))))))))))))))))))
-                # endregion
+    def onTextFinalR(self, number):
+        print(f"Number of rollers are {len(self.list_of_widgetsR)}.")
+        yo = self.list_of_widgetsR[number - 1] # gives button based on current total number like 20
+        hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
         
-        def onTextFinal(self,number):
-            print(f" Number of elements are {len(self.list_of_widgets)}.")
-            yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
-            hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
-            
-            print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
-            
-            print("Element creation started-") # the process really starts from here
-            print("------------")
-            self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
+        print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
         
-        def lineParsing(self, text, number):
-            try:
-                i,j = text.split(",") # Grab the text and break it into two parts
+        print("Roller process started-") # the process really starts from here
+        print("------------")
+        self.lineParsingR(hey[0].text(), number) # if number and label are same then can just replace with number
 
-                self.Graphics.element_check(number, int(i), int(j))
-                            
-                self.list_of_widgets_previous_text[number - 1] = text # replace zeros with good number
-                print("=======================")
-                
-            except:
-                print("node created unsuccessfully")
-                print("format was not followed")
-                self.cleartext(number)
-                print("=======================")
-                
-        def cleartext(self, number):
-            yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
-            
-            hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
-            hey[0].clear()
-                
-            print(f"Line {number} has been cleared.") # go to the first QLineEdit in the list and grab the text from it
-            
-            hey[0].setText(self.list_of_widgets_previous_text[number - 1])
+    def onTextFinalRP(self, number):
+        print(f"Number of pins are {len(self.list_of_widgetsRP)}.")
+        yo = self.list_of_widgetsRP[number - 1] # gives button based on current total number like 20
+        hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
         
+        print(f"Line {number} has text {hey[0].text()}") # go to the first QLineEdit in the list and grab the text from it
+        
+        print("Pin process started-") # the process really starts from here
+        print("------------")
+        self.lineParsingRP(hey[0].text(), number) # if number and label are same then can just replace with number
+
+    def lineParsing(self, text, number):
+        try:
+            i,j = text.split(",") # Grab the text and break it into two parts
+
+            self.Graphics.element_check(number, int(i), int(j))
+                        
+            self.list_of_widgets_previous_text[number - 1] = text # replace zeros with good number
+            print("=======================")
+            
+        except:
+            print("node created unsuccessfully")
+            print("format was not followed")
+            self.cleartext(number)
+            print("=======================")
+            
+    def lineParsingR(self, text, number):
+        try:
+            self.Graphics.roller_check(int(text), number)
+                        
+            self.list_of_widgets_previous_textR[number - 1] = text # replace zeros with good number
+            print("Roller process completed-")
+            print("=======================")
+            
+        except:
+            print("------------")
+            print("Roller process failed-")
+            print("Format was not followed")
+            self.cleartext(number)
+            print("=======================")
+    
+    def lineParsingRP(self, text, number):
+        try:
+            self.Graphics.pin_check(int(text), number)
+                        
+            self.list_of_widgets_previous_textRP[number - 1] = text # replace zeros with good number
+            print("Pin process completed-")
+            print("=======================")
+            
+        except:
+            print("------------")
+            print("Pin process failed-")
+            print("Format was not followed")
+            self.cleartext(number)
+            print("=======================")
+         
+    def cleartext(self, number):
+        yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
+        
+        hey = yo.findChildren(QLineEdit) # finds all QLineEdits in second button (there is only one) and give them in a list
+        hey[0].clear()
+            
+        print(f"Line {number} has been cleared.") # go to the first QLineEdit in the list and grab the text from it
+        
+        hey[0].setText(self.list_of_widgets_previous_text[number - 1])
+    
 class UI(): # This class will hold the method that will be called in a different file to start UI
     def start():
         App = QApplication([]) # Start up the UI system

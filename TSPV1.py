@@ -266,6 +266,8 @@ coeffeicent_matrix = np.hstack((master_matrix, roller_reactions))
 ground = vp.box(pos=roller_support.pos - vp.vec(roller_support.pos.x, roller_support.radius + 0.05, 0), 
                 size=vp.vec(roller_support.pos.x * 2, 0.1 ,2), texture=vp.textures.wood)
 
+
+# here since the ground object is reference
 pin_support = vp.pyramid(pos = vec(node_pin_reaction.x, ground.pos.y + 0.05, 0), 
                          size = vec(node_pin_reaction.y - ground.pos.y , 0.5, 0.5),
                          axis = vec(0, 1, 0), texture = vp.textures.granite)
@@ -310,8 +312,19 @@ while True:
     try:
         i = int(input(f"Enter node on which force {number_of_forces + 1} acts.\n"))       
         force = node_position = force_creation(i)
-        known_forces[i * 2 - 2][0] = 1 * force.x # The x transformion for the force on the element AB from A
-        known_forces[i * 2 - 1][0] = 1 * force.y # The y transformion for the force on the element AB from A
+        
+        e = known_forces[i * 2 - 2][0] + 1 * force.x
+        if e < 1e-6:
+            known_forces[i * 2 - 2][0] = 0
+        else:
+            known_forces[i * 2 - 2][0] = e
+
+        z = known_forces[i * 2 - 1][0] + 1 * force.y # The y transformion for the force on the element AB from A
+        if z < 1e-6:
+            known_forces[i * 2 - 1][0] = 0
+        else:
+            known_forces[i * 2 - 1][0] = z
+        
         number_of_forces += 1
         print(known_forces)   
         print("--------------------------")
