@@ -1690,6 +1690,7 @@ class ElementWindow(QMainWindow):
             self.genericInput_1.setStyleSheet("background-color: white;")
             
             self.delete_1 = QRadioButton()
+            self.delete_1.toggled.connect(lambda: self.deleteElement(number))
             #(((((((((((((((((((())))))))))))))))))))
             # endregion
             
@@ -1740,7 +1741,8 @@ class ElementWindow(QMainWindow):
             self.genericInputESG.setStyleSheet("background-color: white;")
             
             self.deleteESG = QRadioButton()
-            self.deleteESG.setDisabled(True)
+            self.deleteESG.setDisabled(False)
+            self.deleteESG.toggled.connect(lambda: self.deleteRoller(number))
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # endregion
             
@@ -1793,7 +1795,8 @@ class ElementWindow(QMainWindow):
         self.genericInputESGP.setStyleSheet("background-color: white;")
         
         self.deleteESGP = QRadioButton()
-        self.deleteESGP.setDisabled(True)
+        self.deleteESGP.setDisabled(False)
+        self.deleteESGP.toggled.connect(lambda: self.deletePin(number))
         #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # endregion
         
@@ -1831,6 +1834,28 @@ class ElementWindow(QMainWindow):
         print("------------")
         self.lineParsing(hey[0].text(), number) # if number and label are same then can just replace with number
     
+    def deleteElement(self, number):
+        
+        print(f"Delete element {number}")
+        
+        # so if the max amount of pins is 2 and we want to delete pin number 2 then do this, prefect sit
+        if self.ElementInputScrollAreaWidgetLayout.count() == number:
+            # first is the visual delete
+            
+            z = self.ElementInputScrollAreaWidgetLayout.takeAt(number - 1).widget()
+            # worked! again
+            
+            z.close()            
+            print(self.list_of_widgets_previous_text)
+
+            self.list_of_widgets.pop(number - 1) # correctly labels number for next creation
+            self.list_of_widgets_previous_text.pop(number - 1)
+            
+            print(self.list_of_widgets_previous_text)
+            
+        self.Graphics.element_delete(number)   
+        self.repaint() 
+
     def onTextFinalR(self, number):
         print(f"Number of rollers are {len(self.list_of_widgetsR)}.")
         yo = self.list_of_widgetsR[number - 1] # gives button based on current total number like 20
@@ -1842,6 +1867,28 @@ class ElementWindow(QMainWindow):
         print("------------")
         self.lineParsingR(hey[0].text(), number) # if number and label are same then can just replace with number
 
+    def deleteRoller(self, number):
+        
+        print(f"Delete Roller {number}")
+        
+        # so if the max amount of rollers is 2 and we want to delete roller number 2 then do this, prefect sit
+        if self.ESInputScrollAreaWidgetLayout.count() == number:
+            # first is the visual delete
+            
+            z = self.ESInputScrollAreaWidgetLayout.takeAt(number - 1).widget()
+            # worked! again
+            
+            z.close()            
+            print(self.list_of_widgets_previous_textR)
+
+            self.list_of_widgetsR.pop(number - 1) # correctly labels number for next creation
+            self.list_of_widgets_previous_textR.pop(number - 1)
+            
+            print(self.list_of_widgets_previous_textR)
+            
+        self.Graphics.roller_delete(number)   
+        self.repaint() 
+        
     def onTextFinalRP(self, number):
         print(f"Number of pins are {len(self.list_of_widgetsRP)}.")
         yo = self.list_of_widgetsRP[number - 1] # gives button based on current total number like 20
@@ -1852,6 +1899,28 @@ class ElementWindow(QMainWindow):
         print("Pin process started-") # the process really starts from here
         print("------------")
         self.lineParsingRP(hey[0].text(), number) # if number and label are same then can just replace with number
+
+    def deletePin(self, number):
+        
+        print(f"Delete Pin {number}")
+        
+        # so if the max amount of pins is 2 and we want to delete pin number 2 then do this, prefect sit
+        if self.ESPInputScrollAreaWidgetLayout.count() == number:
+            # first is the visual delete
+            
+            z = self.ESPInputScrollAreaWidgetLayout.takeAt(number - 1).widget()
+            # worked! again
+            
+            z.close()            
+            print(self.list_of_widgets_previous_textRP)
+
+            self.list_of_widgetsRP.pop(number - 1) # correctly labels number for next creation
+            self.list_of_widgets_previous_textRP.pop(number - 1)
+            
+            print(self.list_of_widgets_previous_textRP)
+            
+        self.Graphics.pin_delete(number)   
+        self.repaint() 
 
     def lineParsing(self, text, number):
         try:

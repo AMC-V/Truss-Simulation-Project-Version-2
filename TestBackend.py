@@ -427,12 +427,46 @@ class GraphicsTools():
         element_AB[node_number_2 * 2 - 1][0] = -1 * y/c # The y transformion for the force on the element AB from B
 
         self.list_of_elements.append(element_AB) # holds column matrix
+        
+        print(f"{self.list_of_elements} and number {len(self.list_of_elements)}")
 
         self.number_of_current_members += 1
         
         print("------------")
         print(f"Successfully created element {self.number_of_current_members} -")
         
+    def element_delete(self, number):
+        
+        if number > self.number_of_current_members:
+            print(f"No backend delete nesseery since only the front element {number} was created but was not created in in backend, current backend element is {self.number_of_current_members}")
+        
+        else:
+            # get item hide, and then later use same name to get memory back
+            self.element_visual_list[number - 1].opacity = 0
+            self.list_of_elements_label[number - 1].visible = False
+            
+            # watch out for the difference in brakets vs parentheses
+            x = self.element_visual_list[number - 1]
+            y = self.list_of_elements_label[number - 1]
+            z = self.list_of_unknowns[number - 1]
+            w = self.list_of_elements[number -1]
+            
+            # destory previous ref 
+            self.element_visual_list.pop(number - 1)
+            self.list_of_elements_label.pop(number - 1)
+            self.list_of_unknowns.pop(number - 1)
+            self.list_of_elements.pop(number - 1)
+            
+            # get memory back
+            x = 0
+            y = 0
+            z = 0
+            w = 0
+            
+            self.number_of_current_members -= 1
+            
+            print(f"number of backend elements is {self.number_of_current_members} and number of front to be deleted is {number}")
+  
     def element_update(self, current_element, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
 
         # Check to flip the inputs
@@ -511,7 +545,7 @@ class GraphicsTools():
  
     def roller_creation(self, node_number, number):
         
-        node_roller_reaction = self.list_of_nodes[node_number - 1]
+        node_roller_reaction = self.list_of_nodes[node_number - 1] # Grab node location of where the roller will be 
         roller_support = vp.sphere(pos = node_roller_reaction - vec(0 , 0.1 + 0.1, 0), radius=0.1,
                                 texture = vp.textures.granite)
 
@@ -564,7 +598,7 @@ class GraphicsTools():
         
         # Here we are skipping a few rollers in the line to create the new roller, so we need to actualize the skipped
         elif current_number > self.number_of_backend_rollers and current_number - 1 != self.number_of_backend_rollers:
-            print("Trying to actualize an roller without actualizing the previous roller(s)")
+            print("Trying to actualize a roller without actualizing the previous roller(s)")
             
             number_need_to_actualize = (current_number - 1) - self.number_of_backend_rollers # math was done to figure out number
             
@@ -588,6 +622,68 @@ class GraphicsTools():
         else:
             print(f"Updating roller {current_number} -")
             self.roller_update(node_number, current_number)
+
+    def roller_delete(self, number):
+        
+        if number > self.number_of_backend_rollers:
+            print(f"No backend delete nesseery since only the front roller {number} was created but was not created in in backend, current backend roller is {self.number_of_backend_rollers}")
+        
+        else:
+            # get item hide, and then later use same name to get memory back
+            self.list_of_visual_rollers[number - 1].opacity = 0
+            self.list_of_rollers_ground[number - 1].opacity = 0
+            
+            # watch out for the difference in brakets vs parentheses
+            x = self.list_of_visual_rollers[number - 1]
+            y = self.list_of_rollers_ground[number - 1]
+            z = self.list_of_rollers[number - 1]
+            
+            
+            # destory previous ref 
+            self.list_of_visual_rollers.pop(number - 1)
+            self.list_of_rollers_ground.pop(number - 1)
+            self.list_of_rollers.pop(number - 1)
+            
+            # get memory back
+            x = 0
+            y = 0
+            z = 0
+            
+            self.number_of_backend_rollers -= 1
+            
+            print(f"number of backend rollers is {self.number_of_backend_rollers} and number of front to be deleted is {number}")
+
+    def pin_delete(self, number):
+        
+        if number > self.number_of_backend_pins:
+            print(f"No backend delete nesseery since only the front pin {number} was created but was not created in in backend, current backend pin is {self.number_of_backend_pins}")
+        
+        else:
+            # get item hide, and then later use same name to get memory back
+            self.list_of_visual_pins[number - 1].opacity = 0
+            self.list_of_pins_ground[number - 1].opacity = 0
+            
+            # watch out for the difference in brakets vs parentheses
+            x = self.list_of_visual_pins[number - 1]
+            y = self.list_of_pins_ground[number - 1]
+            z = self.list_of_pins[number - 1]
+            w = self.list_of_pins_spacing[number -1]
+            
+            # destory previous ref 
+            self.list_of_visual_pins.pop(number - 1)
+            self.list_of_pins_ground.pop(number - 1)
+            self.list_of_pins.pop(number - 1)
+            self.list_of_pins_spacing.pop(number - 1)
+            
+            # get memory back
+            x = 0
+            y = 0
+            z = 0
+            w = 0
+            
+            self.number_of_backend_pins -= 1
+            
+            print(f"number of backend pins is {self.number_of_backend_pins} and number of front to be deleted is {number}")
 
     def pin_creation(self, node_number, number):
         
@@ -693,8 +789,11 @@ class GraphicsTools():
     def create_Master_Matrix(self):
         print("Formulating Master Matrix-")
         
-        if len(self.master_matrix) > 1:
+        if len(self.list_of_elements) > 1:
             self.master_matrix = np.concatenate((self.list_of_elements[0], self.list_of_elements[1]), axis = 1)
+            
+            print(f"{self.master_matrix} checker")
+            
             for x in arange(0, len(self.list_of_elements) - 2, 1):
                 self.master_matrix = np.hstack((self.master_matrix, self.list_of_elements[x + 2]))    
         else:
