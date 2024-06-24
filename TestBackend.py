@@ -233,6 +233,49 @@ class GraphicsTools():
                
         return vec(x, y, 0) # a return is not really needed atm but keeping in case
     
+    def node_delete(self, number):
+        
+        if number > self.number_of_nodes:
+            print(f"No backend delete nesseery since only the front node {number} was created but was not created in in backend, current backend node is {self.number_of_nodes}")
+        
+        else:
+            # get item hide, and then later use same name to get memory back            
+            self.list_of_spheres[number - 1].opacity = 0
+            self.list_of_force_arrows[number - 1].opacity = 0   
+            self.list_of_labels[number - 1].visible = False
+                    
+            # watch out for the difference in brakets vs parentheses
+            e = self.list_of_spheres[number - 1]
+            j = self.list_of_force_arrows[number - 1]
+            r = self.list_of_labels[number - 1]
+            x = self.list_of_nodes[number - 1]
+            y = self.list_of_force[number - 1]
+            z = self.list_of_angle[number - 1]
+            w = self.list_of_force_final[number -1]
+            
+            # destroy previous ref 
+            self.list_of_spheres.pop(number - 1)
+            self.list_of_force_arrows.pop(number - 1)
+            self.list_of_labels.pop(number - 1)
+            self.list_of_nodes.pop(number - 1)
+            self.list_of_force.pop(number - 1)
+            self.list_of_angle.pop(number - 1)
+            self.list_of_force_final.pop(number - 1)
+            
+            
+            # get memory back
+            e = 0
+            j = 0
+            r = 0
+            x = 0
+            y = 0
+            z = 0
+            w = 0
+            
+            self.number_of_nodes -= 1
+            
+            print(f"number of nodes is {self.number_of_nodes} and number of front to be deleted is {number}")
+
     def node_creation_with_force(self, x, y, number_of_node, force, angle): # to handle new nodes and existing node, with new or existing with forces
         
         # Node is completely new with new force, doesn't exist in list of nodes, need to create both

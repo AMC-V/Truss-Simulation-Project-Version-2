@@ -1,4 +1,5 @@
 # Files to be ignored by git, so will not appear in changes (working area) or staging area
 
 __pycache__
+.vscode
 *.pyc

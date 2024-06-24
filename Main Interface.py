@@ -621,6 +621,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         #self.symmetric.setStyleSheet("""QCheckBox::indicator:hover{background-color: green;}""")
         
         self.delete_1 = QRadioButton()
+        self.delete_1.toggled.connect(lambda: self.deleteNode(number))
         #(((((((((((((((((((())))))))))))))))))))
         # endregion
         
@@ -646,7 +647,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         self.nodeInputScrollAreaWidgetLayout.addWidget(self.genericRowWidget)
         #(((((((((((((((((((())))))))))))))))))))
         # endregion
-          
+                    
     def createMinorForceResponse(self, number):
         # region Minor Force Input Widget and Layout Creation
         #(((((((((((((((((((())))))))))))))))))))
@@ -701,6 +702,37 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         #(((((((((((((((((((())))))))))))))))))))
         # endregion
     
+    def deleteNode(self, number):
+        
+        print(f"Delete node {number}")
+        
+        # so if the max amount of nodes is 2 and we want to delete nodes number 2 then do this, prefect sit
+        if self.nodeInputScrollAreaWidgetLayout.count() == number:
+            # first is the visual delete
+            
+            z = self.nodeInputScrollAreaWidgetLayout.takeAt(number - 1).widget()
+            
+            a = self.forceInputScrollAreaWidgetLayout.takeAt(number - 1).widget()
+            # worked! again
+            
+            z.close()   
+            a.close()
+                     
+            print(self.list_of_widgets_previous_text)
+
+            self.list_of_widgets.pop(number - 1) # correctly labels number for next creation
+            self.list_of_widgets_previous_text.pop(number - 1)
+            
+            # important for numbers
+            self.list_of_widgetsF.pop(number - 1)
+            self.list_of_widgets_previous_textF.pop(number - 1)
+            
+            print(self.list_of_widgets_previous_text)
+            
+        self.start.node_delete(number)
+
+        self.repaint()
+
     def onTextFinal(self,number):
         print(f"Number of nodes is {len(self.list_of_widgets)}.")
         yo = self.list_of_widgets[number - 1] # gives button based on current total number like 20
