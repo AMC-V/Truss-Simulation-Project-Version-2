@@ -8,10 +8,10 @@ print("hi")
 
 import sys
 
-class MainWindow(QMainWindow): # Class that will create UI, will inhertant all the methods from QMainWindow
+class MainWindow(QMainWindow): # Class that will create UI, will inherit all the methods from QMainWindow
     def __init__(self): # The constructor for this class that will always be called when first created
-        super().__init__() # Call the constructor of the parent clas and return a object of the parent
-        self.setGeometry(1420, 50, 100, 100) # Set spawn position of window and inital size
+        super().__init__() # Call the constructor of the parent class and return a object of the parent
+        self.setGeometry(1420, 50, 100, 100) # Set spawn position of window and initial size
         self.setMaximumWidth(100)
         self.setMaximumHeight(1500)
         self.setWindowTitle("INSIGHT")
@@ -22,7 +22,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         # region Window Widget and Layout Creation
         #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         self.canvas = QWidget() # a blank widget that will only hold the primary layout for widgets        
-        self.mainLayout = QHBoxLayout() # As we add stuff it will be placed horizatonally
+        self.mainLayout = QHBoxLayout() # As we add stuff it will be placed horizontally
         #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
         # endregion
         
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow): # Class that will create UI, will inhertant all t
         #========================================
         # region Main Nodes Section Widget and Layout Creation
         #----------------------------------------
-        # The Second Main Struture
+        # The Second Main Structure
         self.nodeContainer = QGroupBox("Nodes") # Contains all node related things, will contain the nodeLayout
         self.nodeContainer.setFixedWidth(550) # Has same coloring as MainWindow Widget
         
@@ -1763,7 +1763,7 @@ class ElementWindow(QMainWindow):
             # region Minor Engineering Supports Supports Input Content
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # Tiny Widgets
-            self.indexNumberESG = QLabel(f'{number}')
+            self.indexNumberESG = QLabel(f'{number}') # can change later
             self.indexNumberESG.setStyleSheet("""
                                         min-width: 2em;
                                         max-width: 2em; """)
@@ -1774,7 +1774,7 @@ class ElementWindow(QMainWindow):
             
             self.deleteESG = QRadioButton()
             self.deleteESG.setDisabled(False)
-            self.deleteESG.toggled.connect(lambda: self.deleteRoller(number))
+            self.deleteESG.toggled.connect(self.deleteRoller(number)) # will also needed to be changed if label changes
             #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             # endregion
             
@@ -1900,7 +1900,7 @@ class ElementWindow(QMainWindow):
         self.lineParsingR(hey[0].text(), number) # if number and label are same then can just replace with number
 
     def deleteRoller(self, number):
-        
+        # handles frontend deletion
         print(f"Delete Roller {number}")
         
         # so if the max amount of rollers is 2 and we want to delete roller number 2 then do this, prefect sit
@@ -1908,7 +1908,6 @@ class ElementWindow(QMainWindow):
             # first is the visual delete
             
             z = self.ESInputScrollAreaWidgetLayout.takeAt(number - 1).widget()
-            # worked! again
             
             z.close()            
             print(self.list_of_widgets_previous_textR)
@@ -1917,10 +1916,37 @@ class ElementWindow(QMainWindow):
             self.list_of_widgets_previous_textR.pop(number - 1)
             
             print(self.list_of_widgets_previous_textR)
+        elif self.ESInputScrollAreaWidgetLayout.count() > number: # This means the roller being deleted is in the middle
+            z = self.ESInputScrollAreaWidgetLayout.takeAt(number - 1).widget()
+            z.close()
             
-        self.Graphics.roller_delete(number)   
-        self.repaint() 
+            print(f"old list of prev text{self.list_of_widgets_previous_textR}")
+            
+            self.list_of_widgetsR.pop(number - 1) # correctly labels number for next creation
+            self.list_of_widgets_previous_textR.pop(number - 1)
+            
+            print(f"new list of prev text{self.list_of_widgets_previous_textR}") # To show if correctly destroyed previous text
+            print(f"Number of rollers in frontend are now {len(self.list_of_widgetsR)}.")
+            # now to update the numbers in the frontend
+            for num in range(number, self.ESInputScrollAreaWidgetLayout.count() + 1 ): # +1 to account for the newly reduced number of widgets in the layout
+                # starting from position number 2 get that label number and subtract by 1 and update the label until we reach max amount of labels
+                print(f"old label {self.list_of_widgetsR[num - 1].findChildren(QLabel)[0].text()}")
+                
+                self.list_of_widgetsR[num - 1].findChildren(QLabel)[0].setText(f'{num}') # if 2 then num is equal to 2
+                
+                
+                # this bottom part is needed to correct send the right number when clicking on the radio button after being newly relabeled 
+                try : self.list_of_widgetsR[num - 1].findChildren(QRadioButton)[0].disconnect()
+                except Exception: pass
+                
+                self.list_of_widgetsR[num - 1].findChildren(QRadioButton)[0].connect(self.deleteRoller(num))           
+                       
+        else:
+            pass # shit has gone wrong af
         
+        self.Graphics.roller_delete(number) # Backend function
+        self.repaint() 
+            
     def onTextFinalRP(self, number):
         print(f"Number of pins are {len(self.list_of_widgetsRP)}.")
         yo = self.list_of_widgetsRP[number - 1] # gives button based on current total number like 20

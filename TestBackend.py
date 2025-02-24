@@ -429,7 +429,7 @@ class GraphicsTools():
             
             #print(self.known_forces)
            
-    def element_creation(self, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
+    def element_creation(self, node_number_1, node_number_2): # Method to connect the two chosen nodes and generates Force vector for the element        
 
         # Check to flip the inputs
         if node_number_1 > node_number_2:
@@ -510,7 +510,7 @@ class GraphicsTools():
             
             print(f"number of backend elements is {self.number_of_current_members} and number of front to be deleted is {number}")
   
-    def element_update(self, current_element, node_number_1, node_number_2): # Method to connect the two choosen nodes and generates Force vector for the element        
+    def element_update(self, current_element, node_number_1, node_number_2): # Method to connect the two chosen nodes and generates Force vector for the element        
 
         # Check to flip the inputs
         if node_number_1 > node_number_2:
@@ -616,7 +616,7 @@ class GraphicsTools():
         q = self.list_of_visual_rollers[number - 1].pos = node_roller_reaction - vec(0 , 0.1 + 0.1, 0)
         self.list_of_visual_rollers[number - 1].opacity = 1
 
-        # Since node n and node p were choosen then in the element np, the force applied there
+        # Since node n and node p were chosen then in the element np, the force applied there
         roller_reactions = np.zeros( (self.number_of_equations, 1) ) # Creates an empty matrix where num of eqs is the number of rows, 1 is colum
         roller_reactions[node_number * 2 - 1][0] = 1 # The x transformion for the force on pin 
         
@@ -667,22 +667,25 @@ class GraphicsTools():
             self.roller_update(node_number, current_number)
 
     def roller_delete(self, number):
+        # handles backend roller deletion
+        # if number == 2: TODO: create function to handle mid deletion
+        #     print("test to get some result ")
+            
+        # number here is the number sent by the frontend, its number of cell which has been written it NOT the amount of actual nodes    
+        if number > self.number_of_backend_rollers: # meaning if the roller to delete only exist in the frontend and not backend
+            print(f"No backend delete nesseery since only the front roller {number} was created but was not created in backend, current backend roller is {self.number_of_backend_rollers}")
         
-        if number > self.number_of_backend_rollers:
-            print(f"No backend delete nesseery since only the front roller {number} was created but was not created in in backend, current backend roller is {self.number_of_backend_rollers}")
-        
-        else:
+        else:# number == self.number_of_backend_rollers: #number is equal to last actual node, this mean the node being deleted is last actual node not a frontend node
             # get item hide, and then later use same name to get memory back
             self.list_of_visual_rollers[number - 1].opacity = 0
             self.list_of_rollers_ground[number - 1].opacity = 0
             
-            # watch out for the difference in brakets vs parentheses
+            # watch out for the difference in brackets vs parentheses
             x = self.list_of_visual_rollers[number - 1]
             y = self.list_of_rollers_ground[number - 1]
             z = self.list_of_rollers[number - 1]
             
-            
-            # destory previous ref 
+            # destroy previous ref 
             self.list_of_visual_rollers.pop(number - 1)
             self.list_of_rollers_ground.pop(number - 1)
             self.list_of_rollers.pop(number - 1)
@@ -692,9 +695,50 @@ class GraphicsTools():
             y = 0
             z = 0
             
-            self.number_of_backend_rollers -= 1
+            # this process works for mid deletions as well
             
-            print(f"number of backend rollers is {self.number_of_backend_rollers} and number of front to be deleted is {number}")
+            self.number_of_backend_rollers -= 1 # absolute number of rollers 
+            
+            print(f"number of backend rollers after deletion is {self.number_of_backend_rollers} and number of front roller that has been deleted is {number} although user will not notice as labels will update quickly")
+            
+        #else:
+            # TODO: make generic function that will handle mid deletion 
+           # pass  
+            
+    # def mid_deletion(self, number):
+    #     # first lets delete the actual node and its frontend node, 
+    #         print("HA?????")
+    #         # get item hide, and then later use same name to get memory back
+    #         # if there is 1,2,3 and 2 is passed then 2 is gotten from the list thats good
+    #         self.list_of_visual_rollers[number - 1].opacity = 0
+    #         self.list_of_rollers_ground[number - 1].opacity = 0
+            
+    #         # watch out for the difference in brackets vs parentheses
+    #         x = self.list_of_visual_rollers[number - 1]
+    #         y = self.list_of_rollers_ground[number - 1]
+    #         z = self.list_of_rollers[number - 1]
+            
+    #         # destroy previous ref 
+    #         self.list_of_visual_rollers.pop(number - 1)
+    #         self.list_of_rollers_ground.pop(number - 1)
+    #         self.list_of_rollers.pop(number - 1)
+            
+    #         # get memory back
+    #         x = 0
+    #         y = 0
+    #         z = 0
+            
+    #         self.number_of_backend_rollers -= 1
+            
+    #         print(f"ehhhh number of backend rollers is {self.number_of_backend_rollers} and number of front to be deleted is {number}")
+            
+        # then lets relabel the existing actual nodes so from 1,2,3,4 to 1,3,4 to => 1,2,3 the new two was 3 so from three to the end subtract one
+            # to do that we need to know how many actual nodes there are now after deletion  
+            #self.number_of_backend_rollers and number# so from 3 and reduce by 1 all rest of list
+            
+            #for x_dalta in range(number, self.number_of_backend_rollers):
+                
+                
 
     def pin_delete(self, number):
         
